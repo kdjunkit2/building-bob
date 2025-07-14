@@ -52,7 +52,7 @@ if (window.Worker) {
 // worker for handling interactions with llm and embed models either via webllm or transformers.js
 let llmWorker = null;
 if (window.Worker) {
-    llmWorker = new Worker(`${ROOT_URL}shared/js/llmWorker.js`, { type: 'module' });
+    llmWorker = new Worker(`${ROOT_URL}shared/js/llmworker.js`, { type: 'module' });
     llmWorker.callback = null;
     llmWorker.aistatus = null;
     llmWorker.ecallback = null;
