@@ -80,6 +80,7 @@ export class characterManager {
             llmWorker.ecallback = (e) => {this.emodelLoaded(e, params.embedCallback);};
             llmWorker.postMessage({action: 'eload', gpu: localSystem.gpu.available});
         }
+        return {success: 'embedding load requested'};
     }
 
     loadLLM = (params) => {
