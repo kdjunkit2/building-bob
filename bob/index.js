@@ -1,7 +1,6 @@
 import { environVRM } from '../shared/js/environvrm.mjs';
 import { localSystem, characterManager, collectorToConsole } from '../shared/js/character.mjs'
 
-
 const voices = {
     index: 0,
     list: [],

@@ -34,11 +34,16 @@ $ROOT_URL = (str_contains($host, '127.0.0.1')) ? '/bobhub/' : '/';
     }
 </script>
 
+<script>
+  const ROOT_URL = '<?php echo $ROOT_URL; ?>';
+</script>
 <SCRIPT language="javascript" src="index.js" type="module"></SCRIPT>
 <SCRIPT language="javascript" src="js/workhandler.js"></SCRIPT>
 <SCRIPT language="javascript" src="js/model.js"></SCRIPT>
 
 <LINK rel="stylesheet" type="text/css" href="forms/bob.css" />
+
+
 
 <script type="module">
     import {appInit} from "./index.js";
