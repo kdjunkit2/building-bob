@@ -4,6 +4,11 @@
 
 <body class='darkmode'>
 
+<?php
+$host = $_SERVER['HTTP_HOST'];
+$ROOT_URL = (str_contains($host, '127.0.0.1')) ? '/bobhub/' : '/';
+?>
+
 <?php include './shared/forms/header.php';?>
 
 <!-- ===================================== GENERAL =============================================== -->
