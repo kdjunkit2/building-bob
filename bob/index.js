@@ -205,7 +205,8 @@ function changeModel() {
 
 async function loadBasics() {
     loadTTSModel();
-    justBob.loadEmbeddingModel({embedCallback: emodelLoaded});
+    const leresult = justBob.loadEmbeddingModel({embedCallback: emodelLoaded});
+    if(leresult.error) console.error(leresult.error);
     const bobknowledge = {
         faq: {url: 'data/faqcore.csv', header: true, name:'faqcore'},
         info: [
@@ -214,7 +215,7 @@ async function loadBasics() {
         callback: knowledgeReady,
     }
     const ckresult = await justBob.addCharacterKnowledge(bobknowledge);
-    if(ckresult.error) console.log(console.error(ckresult.error));
+    if(ckresult.error) console.error(ckresult.error);
 }
 
 async function loadLLM() {

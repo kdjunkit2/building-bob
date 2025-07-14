@@ -74,7 +74,7 @@ export class characterManager {
     }
 
     loadEmbeddingModel = (params) => {
-        if(!llmWorker) return {error: 'no llmWorder available'};
+        if(!llmWorker) return {error: 'no llmWorker available'};
         if(!params) {return {error: 'missing parameters'}}
         if(!this.ready.embedding) {
             llmWorker.ecallback = (e) => {this.emodelLoaded(e, params.embedCallback);};
@@ -83,7 +83,7 @@ export class characterManager {
     }
 
     loadLLM = (params) => {
-        if(!llmWorker) return {error: 'no llmWorder available'};
+        if(!llmWorker) return {error: 'no llmWorker available'};
         if(!params) {return {error: 'missing parameters'}}
 
         if(params.usellm && params.llmModelId.length) {
