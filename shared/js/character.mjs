@@ -77,6 +77,7 @@ export class characterManager {
         if(!llmWorker) return {error: 'no llmWorker available'};
         if(!params) {return {error: 'missing parameters'}}
         if(!this.ready.embedding) {
+            console.log('calling for embed load', llmWorker);
             llmWorker.ecallback = (e) => {this.emodelLoaded(e, params.embedCallback);};
             llmWorker.postMessage({action: 'eload', gpu: localSystem.gpu.available});
         }
