@@ -1,0 +1,103 @@
+
+/*
+SLATE BLUE COLOR PALLETE FROM LIGHT TO DARK
+HEX: #d1dde8, RGB: (209, 221, 232)
+HEX: #abc0d1, RGB: (171, 192, 209)
+HEX: #94acc2, RGB: (148, 172, 194)
+HEX: #6f899f, RGB: (111, 137, 159)
+HEX: #52708a, RGB: (82, 112, 138)
+HEX: #49637a, RGB: (73, 99, 122) 
+HEX: #40576b, RGB: (64, 87, 107)
+HEX: #374a5c, RGB: (55, 74, 92)
+HEX: #2e3e4d, RGB: (46, 62, 77)
+HEX: #24323d, RGB: (36, 50, 61)
+HEX: #1b252e, RGB: (27, 37, 46)
+HEX: #12191f, RGB: (18, 25, 31)
+HEX: #090c0f, RGB: (9, 12, 15)
+HEX: #000000, RGB: (0, 0, 0)
+*/
+
+body.darkmode {
+   background-color: #090c0f;
+}
+
+body.lightmode {
+   background-color: #fff;
+}
+
+.small {font-family: verdana, arial, sans-serif; font-size: 12px; color: rgb(128,128,128);}
+.basic {font-family: verdana, arial, sans-serif; font-size: 1em; color: rgb(192,192,192);}
+.basicw {font-family: verdana, arial, sans-serif; font-size: 1em; color: rgb(255,255,255);}
+.basicdk {font-family: verdana, arial, sans-serif; font-size: 1em; color: rgb(64,64,64);}
+.basiclbl {font-family: verdana, arial, sans-serif; font-size: 1em; color: rgb(32,32,32);}
+.basictitledk {font-family: verdana, arial, sans-serif; font-size: 32px;; color: rgb(64,64,64);}
+
+.hand {cursor:hand; cursor:pointer;}
+.grabbing {cursor: grab;}
+.grabbing:active {cursor: grabbing;}
+
+div.msgboxoverlay
+{
+   visibility:hidden;
+   position: absolute;
+   left: 0px;
+   top: 0px;
+   width:100%;
+   height:100%;
+   background: #000;
+   opacity:0.8;
+   z-index: 1000;
+}
+
+.header {
+	background: #1b252e;
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
+}
+
+.headertitle {
+    display: inline-block;
+    font-family: "Gears of Peace";
+    font-size: 28px;
+    color: #abc0d1;
+}
+
+.h2title {
+   font-family: "Xolonium-Regular"; 
+   font-size: 28px;
+   color: #abc0d1;
+}
+
+.h3title {
+   font-family: "Xolonium-Regular"; 
+   font-size: 18px;
+   color: #abc0d1;
+}
+
+.appPanel {
+   display: inline-block;
+   background: #1b252e;
+   width: 300px;
+   height: 250px;
+   padding: 10px;
+   border-radius: 10px;
+   margin: 5px;
+   -webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
+}
+
+.appPanelItem {
+   font-family: "Gears of Peace";
+   font-size: 28px;
+   color: #000000;
+   background: #6f899f;
+   width:98%;
+   padding: 5px;
+   border-radius: 5px;
+}
+
+.appPanelItem:hover {
+    background: #abc0d1;
+}

@@ -1,0 +1,41 @@
+
+.botchat {
+	color: white; 
+	background-color: rgba(55, 74, 92, 0.5); 
+	font-family: "Xolonium-Regular";
+    padding: 10px;
+	font-size: 16px; 
+	max-width: 90%; 
+	border-radius: 15px 15px;
+    float: left;
+    margin-top: 10px;
+	clear: both;
+}
+
+.userchat {
+	color:#abc0d1; 
+	background-color: rgba(27, 37, 46, 0.5); 
+	font-family: "Xolonium-Regular";
+    padding: 10px;
+	font-size: 16px; 
+	max-width: 90%; 
+	border-radius: 15px 15px;
+    float: right;
+    margin-top: 10px;
+	clear: both;
+}
+
+.bobdlg {
+	position: absolute; 
+	left: 50px; 
+	top: 75px; 
+	width: 600px; 
+	z-index: 1001; 
+	background-color: #24323d;
+	padding: 10px;
+}
+
+.boblist {
+	padding: 5px;
+	background-color: #12191f;
+}

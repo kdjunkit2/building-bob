@@ -1,0 +1,22 @@
+
+@font-face {
+    font-family: "Xolonium-Regular";
+    src: url(Xolonium-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Gears of Peace";
+    src: url(gearsofpeace.ttf);
+}
+
+.techbasic3s {font-family: "Xolonium-Regular"; font-size: 12px; color: rgb(128,128,128);}
+.techbasic3 {font-family: "Xolonium-Regular"; font-size: 16px; color: rgb(128,128,128);}
+.techbasic3m {font-family: "Xolonium-Regular"; font-size: 16px; color: rgb(180,180,180);}
+.techbasic3l {font-family: "Xolonium-Regular"; font-size: 16px; color: rgb(225,225,225);}
+.techbasic3d {font-family: "Xolonium-Regular"; font-size: 16px; color: rgb(64,64,64);}
+.techbasic3b {font-family: "Xolonium-Regular"; font-size: 16px; color: rgb(0,0,0);}
+.techmid3 {font-family: "Xolonium-Regular"; font-size: 20px; color: rgb(128,128,128);}
+.techmid3m {font-family: "Xolonium-Regular"; font-size: 20px; color: rgb(180,180,180);}
+.techmid3d {font-family: "Xolonium-Regular"; font-size: 20px; color: rgb(64,64,64);}
+.techmid3b {font-family: "Xolonium-Regular"; font-size: 20px; color: rgb(0,0,0);}
+.techmid3l {font-family: "Xolonium-Regular"; font-size: 20px; color: rgb(225,225,225);}

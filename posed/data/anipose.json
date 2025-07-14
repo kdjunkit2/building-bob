@@ -1,0 +1,1191 @@
+{
+  "poses": [
+    {
+      "name": "standing",
+      "grounded": false,
+      "bones": {
+        "hips": {
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "position": [
+            0,
+            1.02788937,
+            -0.00357606518
+          ]
+        },
+        "leftUpperLeg": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightUpperLeg": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftLowerLeg": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightLowerLeg": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftFoot": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightFoot": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "spine": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "chest": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "neck": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "head": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftShoulder": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightShoulder": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftUpperArm": {
+          "rotation": [
+            0,
+            0,
+            70
+          ]
+        },
+        "rightUpperArm": {
+          "rotation": [
+            0,
+            0,
+            -70
+          ]
+        },
+        "leftLowerArm": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightLowerArm": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftHand": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightHand": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftToes": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightToes": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftEye": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightEye": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftThumbMetacarpal": {
+          "rotation": [
+            -40,
+            20,
+            10
+          ]
+        },
+        "leftThumbProximal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftThumbDistal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftIndexProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftIndexIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftIndexDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftMiddleProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftMiddleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftMiddleDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftRingProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftRingIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftRingDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftLittleProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftLittleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftLittleDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "rightThumbMetacarpal": {
+          "rotation": [
+            -40,
+            -20,
+            -10
+          ]
+        },
+        "rightThumbProximal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightThumbDistal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightIndexProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightIndexIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightIndexDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightMiddleProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightMiddleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightMiddleDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightRingProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightRingIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightRingDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightLittleProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightLittleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightLittleDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "upperChest": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "name": "walkPose1",
+      "grounded": true,
+      "bones": {
+        "hips": {
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "position": [
+            0,
+            0.9610259486488624,
+            -0.00357606518
+          ]
+        },
+        "leftUpperLeg": {
+          "rotation": [
+            14.999999999999998,
+            0,
+            0
+          ]
+        },
+        "rightUpperLeg": {
+          "rotation": [
+            345,
+            0,
+            0
+          ]
+        },
+        "leftLowerLeg": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightLowerLeg": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftFoot": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightFoot": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "spine": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "chest": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "neck": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "head": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftShoulder": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightShoulder": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftUpperArm": {
+          "rotation": [
+            345,
+            0,
+            70
+          ]
+        },
+        "rightUpperArm": {
+          "rotation": [
+            14.999999999999998,
+            0,
+            -70
+          ]
+        },
+        "leftLowerArm": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightLowerArm": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftHand": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightHand": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftToes": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightToes": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftEye": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightEye": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftThumbMetacarpal": {
+          "rotation": [
+            -40,
+            20,
+            10
+          ]
+        },
+        "leftThumbProximal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftThumbDistal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftIndexProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftIndexIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftIndexDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftMiddleProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftMiddleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftMiddleDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftRingProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftRingIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftRingDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftLittleProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftLittleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftLittleDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "rightThumbMetacarpal": {
+          "rotation": [
+            -40,
+            -20,
+            -10
+          ]
+        },
+        "rightThumbProximal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightThumbDistal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightIndexProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightIndexIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightIndexDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightMiddleProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightMiddleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightMiddleDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightRingProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightRingIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightRingDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightLittleProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightLittleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightLittleDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "upperChest": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "name": "walkPose2",
+      "grounded": true,
+      "bones": {
+        "hips": {
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "position": [
+            0,
+            0.9610259486488624,
+            -0.00357606518
+          ]
+        },
+        "leftUpperLeg": {
+          "rotation": [
+            345,
+            0,
+            0
+          ]
+        },
+        "rightUpperLeg": {
+          "rotation": [
+            14.999999999999998,
+            0,
+            0
+          ]
+        },
+        "leftLowerLeg": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightLowerLeg": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftFoot": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightFoot": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "spine": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "chest": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "neck": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "head": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftShoulder": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightShoulder": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftUpperArm": {
+          "rotation": [
+            14.999999999999998,
+            0,
+            70
+          ]
+        },
+        "rightUpperArm": {
+          "rotation": [
+            345,
+            0,
+            -70
+          ]
+        },
+        "leftLowerArm": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightLowerArm": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftHand": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightHand": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftToes": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightToes": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftEye": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightEye": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftThumbMetacarpal": {
+          "rotation": [
+            -40,
+            20,
+            10
+          ]
+        },
+        "leftThumbProximal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftThumbDistal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "leftIndexProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftIndexIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftIndexDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftMiddleProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftMiddleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftMiddleDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftRingProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftRingIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftRingDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftLittleProximal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftLittleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "leftLittleDistal": {
+          "rotation": [
+            0,
+            0,
+            20
+          ]
+        },
+        "rightThumbMetacarpal": {
+          "rotation": [
+            -40,
+            -20,
+            -10
+          ]
+        },
+        "rightThumbProximal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightThumbDistal": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        "rightIndexProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightIndexIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightIndexDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightMiddleProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightMiddleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightMiddleDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightRingProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightRingIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightRingDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightLittleProximal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightLittleIntermediate": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "rightLittleDistal": {
+          "rotation": [
+            0,
+            0,
+            -20
+          ]
+        },
+        "upperChest": {
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    }
+  ],
+  "animations": [
+    {
+      "name": "walkloop",
+      "loop": true,
+      "frames": [
+        {
+          "time": 0,
+          "pose": "walkPose1"
+        },
+        {
+          "time": 0.5,
+          "pose": "walkPose2"
+        },
+        {
+          "time": 1,
+          "pose": "walkPose1"
+        }
+      ]
+    }
+  ]
+}
