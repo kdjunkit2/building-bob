@@ -3,14 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <title>Building Bob</title>
+  <style>
+    body {
+      background: #f9f9f9;
+      font-family: "Segoe UI", sans-serif;
+      color: #333;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #0055aa;
+    }
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    p.small {
+      font-size: 0.85rem;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 1rem 0;
+    }
+    a {
+      text-decoration: none;
+      background: #0055aa;
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 5px;
+      width: 300px;
+      display: inline-block;
+      transition: background 0.3s ease;
+    }
+    a:hover {
+      background: #003d80;
+    }
+  </style>
 </head>
 <body>
-  <h1>Building Bob</h1>
-  <p>This is a public demo area for the Building Bob project.</p>
+  <h1><img src="bob/data/bob.png" height="50px" /> Building Bob</h1>
+  <p>
+    This is the main portal for the <strong>Building Bob</strong> project — a modular, browser-based AI character platform that brings virtual avatars to life without relying on Unity, cloud APIs, or heavy infrastructure.
+  </p>
+  <p class="small">
+    It combines lightweight local models, VRM avatar rendering, and a flexible architecture to explore expressive AI interaction — all in your browser. This project is an evolving personal journey in building approachable, local-first AI systems with a creative twist. Bob isn't just a character — he's a demonstration of what's possible when you combine local inference, real-time visuals, and smart fallback logic into a cohesive personality engine.
+  </p>
   <ul>
-    <li><a href="http://45.55.249.227/bob/index.php">Try FlexiBob</a></li>
-    <li><a href="http://45.55.249.227/posed/index.php">Try PosEd</a></li>
-    <li><a href="https://github.com/kdjunkit2/building-bob">View on GitHub</a></li>
+    <li><a href="http://45.55.249.227/bob/index.php">🧠 Try FlexiBob (AI chat demo)</a></li>
+    <li><a href="http://45.55.249.227/posed/index.php">🎮 Try PosEd (VRM pose editor)</a></li>
+    <li><a href="https://github.com/kdjunkit2/building-bob">📂 View on GitHub</a></li>
   </ul>
 </body>
 </html>
