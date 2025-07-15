@@ -31,9 +31,9 @@
     <div style='position:relative; top:10px;'>
         <span class='techmid3l'>Making Bob more dynamic</span><br>
         <ul class='techbasic3m' style="padding-left:30px">
-            <li>Change knowledge</li>
-            <li>Change AI models</li>
-            <li>Change voices</li>
+            <li>FAQ and text context knowledge</li>
+            <li>Few shot persona context</li>
+            <li>Small LLMs with GPU support</li>
         </ul>
     </div>
 </div>
