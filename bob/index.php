@@ -9,10 +9,7 @@
 <LINK rel="stylesheet" type="text/css" href="../shared/css/ctrls.css" />
 
 <body class='darkmode'>
-<?php
-$host = $_SERVER['HTTP_HOST'];
-$ROOT_URL = (str_contains($host, '127.0.0.1')) ? '/bobhub/' : '/';
-?>
+
 <?php include '../shared/forms/header.php';?>
 
 <div style='position:relative;'>
@@ -20,7 +17,7 @@ $ROOT_URL = (str_contains($host, '127.0.0.1')) ? '/bobhub/' : '/';
     <?php include 'forms/generate.php';?>
 </div>
 
-<?php include $_SERVER['DOCUMENT_ROOT'].'/bobhub/shared/forms/mbo.php';?>
+<?php include '/shared/forms/mbo.php';?>
 <?php include 'forms/dlg.php';?>
 </body>
 

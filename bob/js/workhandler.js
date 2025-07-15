@@ -2,7 +2,7 @@
 // worker for handling interations with the Kokoro TTS model
 let kttsWorker = null;
 if (window.Worker) {
-    kttsWorker = new Worker(`${ROOT_URL}shared/js/kokoroworker.js`, { type: 'module' });
+    kttsWorker = new Worker(`/shared/js/kokoroworker.js`, { type: 'module' });
     if(!kttsWorker) {console.warn('Kokoro worker not found');}
     kttsWorker.callback = null;
     kttsWorker.aistatus = null;
@@ -52,7 +52,7 @@ if (window.Worker) {
 // worker for handling interactions with llm and embed models either via webllm or transformers.js
 let llmWorker = null;
 if (window.Worker) {
-    llmWorker = new Worker(`${ROOT_URL}shared/js/llmworker.js`, { type: 'module' });
+    llmWorker = new Worker(`/shared/js/llmworker.js`, { type: 'module' });
     llmWorker.callback = null;
     llmWorker.aistatus = null;
     llmWorker.ecallback = null;

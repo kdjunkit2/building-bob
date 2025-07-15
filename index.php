@@ -4,18 +4,13 @@
 
 <body class='darkmode'>
 
-<?php
-$host = $_SERVER['HTTP_HOST'];
-$ROOT_URL = (str_contains($host, '127.0.0.1')) ? '/bobhub/' : '/';
-?>
-
 <?php include './shared/forms/header.php';?>
 
 <!-- ===================================== GENERAL =============================================== -->
 <br>
 <div id='mpanel1' class='appPanel child'>
     <div id='posed' class='appPanelItem hand' onclick="window.location.href='posed'">
-        <img src='./assets/run1.png' style='position:relative; top:5px;' draggable='false' />
+        <img src='/assets/run1.png' style='position:relative; top:5px;' draggable='false' />
         <span style='position:relative; top:0px;'>PosEd</span>
     </div>
     <div style='position:relative; top:10px;'>
@@ -30,7 +25,7 @@ $ROOT_URL = (str_contains($host, '127.0.0.1')) ? '/bobhub/' : '/';
 
 <div id='mpanel4' class='appPanel child'>
     <div id='mdlbuilder' class='appPanelItem hand' onclick="window.location.href='bob'">
-        <img src='./assets/magic.png' style='position:relative; top:5px;' draggable='false' />
+        <img src='/assets/magic.png' style='position:relative; top:5px;' draggable='false' />
         <span style='position:relative; top:0px;'>FlexiBob</span>
     </div>
     <div style='position:relative; top:10px;'>
