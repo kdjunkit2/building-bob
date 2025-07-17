@@ -773,8 +773,12 @@ function captureCurrentPoseView(filename = 'pose.png') {
     if (!selectedRadioButton) return;
     const selectedValue = selectedRadioButton.value;
 
+    const renderer = environVRM.renderer();
     let dataURL = null;
     switch(selectedValue) {
+        case 'rendered':
+            dataURL = environVRM.captureView(renderer.domElement.width, renderer.domElement.height);
+            break;
         case 'fullhd':
             dataURL = environVRM.captureView(1920, 1080);
             break;
