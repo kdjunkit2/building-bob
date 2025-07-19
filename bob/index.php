@@ -17,7 +17,7 @@
     <?php include 'forms/generate.php';?>
 </div>
 
-<?php include '/shared/forms/mbo.php';?>
+<?php include '../shared/forms/mbo.php';?>
 <?php include 'forms/dlg.php';?>
 </body>
 
@@ -31,9 +31,6 @@
     }
 </script>
 
-<script>
-  const ROOT_URL = '<?php echo $ROOT_URL; ?>';
-</script>
 <SCRIPT language="javascript" src="index.js" type="module"></SCRIPT>
 <SCRIPT language="javascript" src="js/workhandler.js"></SCRIPT>
 <SCRIPT language="javascript" src="js/model.js"></SCRIPT>
