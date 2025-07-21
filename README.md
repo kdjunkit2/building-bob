@@ -4,6 +4,8 @@
 
 This project is an evolving personal journey in building approachable, local-first AI systems with a creative twist. Bob isn’t just a character — he’s a demonstration of what’s possible when you combine local inference, real-time visuals, and smart fallback logic into a cohesive personality engine.
 
+Learning resources are available under the "docs" folder.
+
 ---
 
 ## 🎯 Project Goals

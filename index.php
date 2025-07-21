@@ -38,6 +38,19 @@
     </div>
 </div>
 
+<div id='mpanel4' class='appPanel child'>
+    <div id='mdlbuilder' class='appPanelItem hand' onclick="window.location.href='docs'">
+        <img src='/assets/books4.png' style='position:relative; top:5px;' draggable='false' />
+        <span style='position:relative; top:0px;'>Resources</span>
+    </div>
+    <div style='position:relative; top:10px;'>
+        <span class='techmid3l'>Building Bob</span><br>
+        <ul class='techbasic3m' style="padding-left:30px">
+            <li>Episode links to videos for Building Bob series</li>
+        </ul>
+    </div>
+</div>
+
 </body>
 <SCRIPT language="javascript" src="index.js"></SCRIPT>
 <script>

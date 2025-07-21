@@ -500,28 +500,28 @@ function gotVoices(result) {
 //----------------------------------------------------------------------------- VRM (BOB)
 // Initialize the Three.js environment and load the model via Pixiv.js loader
 async function initEnvironment() {
-    const result = environVRM.new('bob', {parentId: 'bobviewer'});
+    const result = environVRM.new('bob', {parentId: 'bobviewer'});  // initialize the environment and set it to the diplay div
     if(result.error) {console.warn(`Error creating environment: ${result.error}`); return;}
-    environVRM.toggleGrid();
-    environVRM.toggleAxes();
-    environVRM.toggleControls();
-    const vrm = await environVRM.loadVRMFromURL('model/Bob.vrm');
+    environVRM.toggleGrid(); // we don't want the grid on for display the portrait of Bob
+    environVRM.toggleAxes(); // we don't need the Axes here either
+    environVRM.toggleControls(); // this turns off the controls for moving and rotating the view
+    const vrm = await environVRM.loadVRMFromURL('model/Bob.vrm'); // we load the model from the fixed URL
     appState.ready.environ = true;
     setCameraView();
-    environVRM.animate();
-    startBlinking();
+    environVRM.animate(); // we begin the animation loop
+    startBlinking(); // start Bob blinking for that "real feel"
 }
 
 // move the camera in to show a portrait of Bob vs. his whole body
 function setCameraView() {
-    const target = environVRM.cloneTarget();
+    const target = environVRM.cloneTarget(); // get the target for where the camera view is facing
     if(!target) {console.warn('No target present'); return;}
 
-    const boneNode = environVRM.head();
+    const boneNode = environVRM.head(); // find the head "bone" so that we can set the view to portrait
     if(!boneNode) {console.warn('Head bone not found'); return;}
-    const adj = 0.075;
-    target.y = boneNode.getWorldPosition(environVRM.vector3()).y + adj;
-    if(environVRM.aspect() < 1) environVRM.setCameraPosition(target.x, target.y - (1*adj), 0.8);
+    const adj = 0.075; // This is just a tweak to get the head view the way I wanted it.
+    target.y = boneNode.getWorldPosition(environVRM.vector3()).y + adj; // adjust the y height to be more at face level vs mid-body
+    if(environVRM.aspect() < 1) environVRM.setCameraPosition(target.x, target.y - (1*adj), 0.8); // set the camera position
     else environVRM.setCameraPosition(target.x, target.y - (1*adj), 0.6);
             
     environVRM.setTarget(target);
@@ -696,7 +696,7 @@ function talkStop() {
 function startBlinking() {
     if (appState.blinkTimer) return;
 
-    const vrm = environVRM.vrm();
+    const vrm = environVRM.vrm(); // get the vrm object variable
     if (!vrm || !vrm.expressionManager) return;
 
     function blinkOnce() {
@@ -717,8 +717,8 @@ function startBlinking() {
     }
 
     function scheduleNextBlink() {
-        const delay = 3000 + Math.random() * 2000; // 3–5 seconds
-        appState.blinkTimer = setTimeout(blinkOnce, delay);
+        const delay = 3000 + Math.random() * 2000; // 3–5 seconds randomly between blinks for a natural rate
+        appState.blinkTimer = setTimeout(blinkOnce, delay); // schedule the next blink
     }
 
     appState.isBlinking = true;

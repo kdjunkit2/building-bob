@@ -1,11 +1,11 @@
 
-import { environVRM } from '../shared/js/environvrm.mjs';
+import { environVRM } from '../shared/js/environvrm.mjs'; // import the environVRM variable
 
 const vrmAppState = {
-    bones: [],
+    bones: [], // used in the UI for listing out the bones in the model for posing
 };
 
-const handPoses = ['default', 'natural', 'fist'];
+const handPoses = ['default', 'natural', 'fist']; // used to simplify the UI for posing the hands quickly
 
 const loadbtn = document.getElementById('loadvrm');
 const loadaniposes = document.getElementById('loadaniposes');
@@ -74,21 +74,21 @@ const capture = document.getElementById('docapture');
 
 export function appInit() {
     document.getElementById('pagetitle').innerHTML = 'PosEd';
-    initEnvironment();
-    loadAniPoseDefault('data/anipose.json');
-    addListeners();
+    initEnvironment(); // initialize the environment
+    loadAniPoseDefault('data/anipose.json'); // load poses and animations
+    addListeners(); // add our UI listeners to capture user actions
 }
 
 function initEnvironment() {
-    const result = environVRM.new('posed');
-    if(result.error) {console.warn(`Error creating environment: ${result.error}`); return;}
+    const result = environVRM.new('posed');  // create the new environment
+    if(result.error) {console.warn(`Error creating environment: ${result.error}`); return;} // check for errors and return
 
-    environVRM.addDomListener('pointerdown', onModelClick);
-    const dims = environVRM.dimensions();
+    environVRM.addDomListener('pointerdown', onModelClick); // add a listener for clicks so we can tell which bone is selected
+    const dims = environVRM.dimensions(); // our environment, by default is the available space, so get the witdh and height
     document.getElementById('environw').value = dims.width;
     document.getElementById('environh').value = dims.height;
     
-    environVRM.animate();
+    environVRM.animate(); // start our animation loop
 }
 
 
@@ -311,16 +311,16 @@ async function loadVRMFromBuffer(buffer) {
 }
 
 function loadAniPoseDefault(url) {
-    fetch(url)
+    fetch(url) // fetches the default pose and animation file which currently only has limited movements
         .then((res) => res.json())
         .then((data) => {
-            environVRM.setPoses(data.poses);
-            environVRM.setAnimations(data.animations);
+            environVRM.setPoses(data.poses); // the poses are accessed via environVRM that imports the poses module
+            environVRM.setAnimations(data.animations); // the animations are accessed via environVRM that imports the animations
         })
         .catch((err) => console.error('Failed to load poses and animations:', err));
 }
 
-function loadAniPoseFromFile(event) {
+function loadAniPoseFromFile(event) {  // function for loading a local pose and animation json file
     const file = event.target.files[0];
     if (!file) return;
 
@@ -328,7 +328,7 @@ function loadAniPoseFromFile(event) {
     reader.onload = function (e) {
         try {
             const data = JSON.parse(e.target.result);
-            if(vrmAppState.currentVrm) Pose.resetModel(vrmAppState);
+            if(vrmAppState.currentVrm) environVRM.poser.resetModel(vrmAppState);
 
             // Load poses
             if (data.poses) {
@@ -350,7 +350,7 @@ function loadAniPoseFromFile(event) {
 }
 
 function saveAniPoseToFile() {
-    const anipose = {poses: Object.values(Pose.poseLibrary), animations: Object.values(Anim.animationLibrary)};
+    const anipose = {poses: Object.values(environVRM.poser.poseLibrary), animations: Object.values(environVRM.anim.animationLibrary)};
     const dataStr = JSON.stringify(anipose, null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
