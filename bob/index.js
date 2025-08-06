@@ -1,7 +1,13 @@
 import { environVRM } from '../shared/js/environvrm.mjs';
 import { localSystem, characterManager, collectorToConsole } from '../shared/js/character.mjs'
+import { readIt } from '../shared/js/bspeech.mjs'
 
-const voices = {
+const aivoices = {
+    index: 0,
+    list: [],
+}
+
+const bvoices = {
     index: 0,
     list: [],
 }
@@ -18,8 +24,9 @@ const appState = {
         character: false,
         environ: false,
     },
+    useaudio: false,
+    ttstype: 'browser',
     modelID: '',
-    useaudio: true,
     usellm: false,
     talking: false,
     talkInterval: null,
@@ -41,8 +48,9 @@ const mouthShapes = ['aa', 'ih', 'ou', 'e', 'oh'];
 const vowelVisemeMap = {a: 'aa', e: 'e', i: 'ih', o: 'oh', u: 'ou'};
 
 const tglvoice = document.getElementById('togglevoice');
-const braindlg = document.getElementById('braindlg');
+const ttstype = document.getElementById('ttstype');
 
+const braindlg = document.getElementById('braindlg');
 const usellm = document.getElementById('usellm');
 const selmdl = document.getElementById('selmdl');
 const brainaction = document.getElementById('brainaction');
@@ -51,7 +59,8 @@ const bobarea = document.getElementById('bobarea');
 const genarea = document.getElementById('genarea');
 const gender = document.getElementById('gender');
 const lang = document.getElementById('language');
-const vlist = document.getElementById('voicelist');
+const bvlist = document.getElementById('bvoicelist');
+const avlist = document.getElementById('avoicelist');
 const stext = document.getElementById('stext');
 const afmt = document.getElementById('format');
 const uprompt = document.getElementById('uprompt');
@@ -63,11 +72,13 @@ export function appInit() {
     document.getElementById('pagetitle').innerHTML = 'FlexiBob';
     addListeners();
     setupModels();
-    loadBasics();
+    loadKnowledge();
 }
 
 function addListeners() {
     if(document.readyState !== 'complete') {setTimeout(addListeners, 30); return;}
+
+    setBrowserVoices();
 
     document.addEventListener('keydown', (e) => {
         // Ctrl+Shift+C as the combo (adjust if needed)
@@ -77,16 +88,38 @@ function addListeners() {
         }
     });
 
+    document.getElementById('mouth').addEventListener('click', (event) => {showVoiceDlg();});
     tglvoice.addEventListener('change', (event) => {
         if(tglvoice.checked) {
             appState.useaudio = true;
-            if(!appState.ready.tts) {loadTTSModel();}
+            ttstype.style.display = 'inline-block';
+            if(ttstype.value == 'ai') {
+                document.getElementById('aivoice').style.display = 'block';
+                document.getElementById('browservoice').style.display = 'none';
+            } else {
+                document.getElementById('aivoice').style.display = 'none';
+                document.getElementById('browservoice').style.display = 'block';
+            }
         } else {
             appState.useaudio = false;
+            ttstype.style.display = 'none';
+            document.getElementById('aivoice').style.display = 'none';
+            document.getElementById('browservoice').style.display = 'none';
         }
     });
-    document.getElementById('mouth').addEventListener('click', (event) => {showVoiceDlg();});
+    ttstype.addEventListener('change', (event => {
+        if(ttstype.value == 'ai') {
+            appState.ttstype = 'ai';
+            document.getElementById('browservoice').style.display = 'none';
+            loadTTSModel();
+        } else {
+            appState.ttstype = 'browser';
+            document.getElementById('aivoice').style.display = 'none';
+            document.getElementById('browservoice').style.display = 'block';
+        }
+    }));
     document.getElementById('mouthdone').addEventListener('click', (event) => {closeVoiceDlg();});
+
     document.getElementById('brain').addEventListener('click', (event) => {showBrainDlg();});
     document.getElementById('kbase').addEventListener('click', (event) => {knowledgeDlg();});
     document.getElementById('kbdone').addEventListener('click', (event) => {closeKBDlg();});
@@ -108,11 +141,11 @@ function addListeners() {
     document.getElementById('kbaseremove').addEventListener('click', (event) => {kBaseRemove();});
     document.getElementById('kbasewipe').addEventListener('click', (event) => {kBaseWipe();});
 
-    gender.addEventListener('change', (event) => {updateVoices(); inputChange();});
-    lang.addEventListener('change', (event) => {updateVoices(); inputChange();});
-    vlist.addEventListener('change', (event) => {inputChange();});
+    gender.addEventListener('change', (event) => {updateAIVoices(); inputChange();});
+    lang.addEventListener('change', (event) => {updateAIVoices(); inputChange();});
+    avlist.addEventListener('change', (event) => {inputChange();});
 
-    audplayer.addEventListener('play', (event) => {setTimeout(() => talkStart(), appState.startDelay);});
+    audplayer.addEventListener('play', (event) => {setTimeout(() => talkStartAI(), appState.startDelay);});
     audplayer.addEventListener('ended', (event) => {talkStop();});
     
     uprompt.addEventListener('keypress', (event) => {
@@ -203,18 +236,18 @@ function changeModel() {
     }
 }
 
-async function loadBasics() {
-    loadTTSModel();
-    const leresult = justBob.loadEmbeddingModel({embedCallback: emodelLoaded});
+async function loadKnowledge() {
+    const leresult = justBob.loadEmbeddingModel({embedCallback: emodelLoaded}); // loads the embedding model in the library
+                                                                                // sets the callback frunction to call when loaded.
     if(leresult.error) console.error(leresult.error);
-    const bobknowledge = {
-        faq: {url: 'data/faqcore.csv', header: true, name:'faqcore'},
-        info: [
+    const bobknowledge = {                                              // structure for adding knowlege to Bob
+        faq: {url: 'data/faqcore.csv', header: true, name:'faqcore'},   // a single FAQ can be included.  header: true is a header row.
+        info: [                                                         // info is text files which has a row for each file included.
             {url: 'data/bobcore.txt', name: 'bobcore'}
         ],
-        callback: knowledgeReady,
+        callback: knowledgeReady,       // function to call when the knowledge has been embedded and ready to go
     }
-    const ckresult = await justBob.addCharacterKnowledge(bobknowledge);
+    const ckresult = await justBob.addCharacterKnowledge(bobknowledge);  // pass the knowledge object to the library
     if(ckresult.error) console.error(ckresult.error);
 }
 
@@ -258,6 +291,9 @@ function showVoiceDlg() {
 }
 
 function closeVoiceDlg() {
+    bvoices.index = bvoices.list[bvlist.value].index;
+    if(appState.ready.tts && appState.ttstype == 'browser') {unloadTTS();}
+
     document.getElementById('mbo').style.visibility = 'hidden';
     document.getElementById('voicedlg').style.display = 'none';    
 }
@@ -314,7 +350,7 @@ function knowledgeDlg() {
     document.getElementById('kbdlg').style.display = 'block';
 
     const fname = justBob.characterFAQName();
-     document.getElementById('faqlist').innerHTML = `<div class='ltext16'>${fname}`;
+    document.getElementById('faqlist').innerHTML = `<div class='ltext16'>${fname}`;
     updateInfoList();
 }
 
@@ -454,6 +490,12 @@ function sknowledgeReady(result) {
 //------------------------------------------  Text-to-Speech (TTS) model loading and prep
 // load the TTS model using the web worker
 async function loadTTSModel() {
+    if(appState.ready.tts) {
+        document.getElementById('aivoice').style.display = 'block';
+        document.getElementById('browservoice').style.display = 'none';
+        return;
+    }
+    document.getElementById('mouthdone').style.display = 'none';
     let device = 'wasm';
     if(localSystem.gpu.available) device = 'webgpu';
 
@@ -466,7 +508,7 @@ function ttsmodelLoaded(result) {
     const tprogress = document.getElementById('ttsprogress');
     tprogress.style.display = 'block';
     if(result.state == 'loading') {
-        tprogress.style.diplay = 'block';
+        tprogress.style.display = 'block';
         const w = `${result.progress.toFixed(0)}%`;
         tprogress.style.width = w;
         tprogress.innerText = `Kokoro TTS: ${w}`;
@@ -479,8 +521,9 @@ function ttsmodelLoaded(result) {
     }
 
     tprogress.innerText = `Kokoro TTS Loaded`;
+    tprogress.style.display = 'none';
+    document.getElementById('mouthdone').style.display = 'block';
     appState.ready.tts = true;
-    checkReady();
     kttsWorker.callback = gotVoices;
     kttsWorker.postMessage({action: 'voices'});
 }
@@ -490,11 +533,18 @@ function gotVoices(result) {
     for (const key in result.data) {
         if (result.data.hasOwnProperty(key)) {
           const value = result.data[key];
-          voices.list.push({label: key, name: value.name, language: value.language, gender: value.gender, });          
+          aivoices.list.push({label: key, name: value.name, language: value.language, gender: value.gender, });          
         }
     }
-    updateVoices();
-    vlist.value = 15;
+    updateAIVoices();
+    avlist.value = 15;
+
+    document.getElementById('aivoice').style.display = 'block';
+}
+
+function unloadTTS() {
+    kttsWorker.callback = null;
+    kttsWorker.postMessage({action: 'unload'});
 }
 
 //----------------------------------------------------------------------------- VRM (BOB)
@@ -529,7 +579,7 @@ function setCameraView() {
 
 // check that everything is loaded and ready to go.
 function checkReady() {
-    if(appState.ready.tts && appState.ready.character && !appState.ready.environ) {
+    if(appState.ready.character && !appState.ready.environ) {
         document.getElementById('initload').style.display = 'none';
         //bobarea.style.visibility = 'visible';
         bobarea.style.display = 'inline-block';
@@ -542,22 +592,37 @@ function checkReady() {
 //------------------------------------------- CONVERSATION FUNCTIONS
 
 function prompt() {
-    const uq = uprompt.value;
-    if(!uq.length) return;
+    const uq = uprompt.value;  // Get the users input from the text box
+    if(!uq.length) return;     // if nothing is entered, return
 
-    addComment('user', uq);
-    uprompt.value = '';
-    justBob.prompt(uq, promptResponse);
+    addComment('user', uq);  // adds the users comment to the user interface (UI) -- this would be custom to the project
+    uprompt.value = '';      // resets the text box to empty
+    justBob.prompt(uq, promptResponse);  // Send the user's text to the character library -- the rest is done behind the scenes
+                                         // promptResponse is where the results are returned when ready this can be a custom function
 }
 
 function promptResponse(a) {
-    if(appState.useaudio) {
-        const vlabel = voices.list[vlist.value].label;
-        kttsWorker.callback = haveAudio;
-        kttsWorker.postMessage({action: 'generate', text: a[0].text, voice: vlabel});
-    } else {
-        addComment('bot', a[0].text);
-        uprompt.focus();
+    if(appState.useaudio) { // if audio is selected to be used
+        // This block if for animating bob's mouth which is not handled within the library, but is handled within
+        // this main index.js file - this is covered separately
+        const spokenText = a[0].text.toLowerCase();
+        const vowelStream = spokenText.replace(/[^aeiou]/g, '').split('');
+        appState.vowelStream = vowelStream;
+        appState.vowelIndex = 0;
+        //---------------------------------------------------------------------
+
+        if(appState.ttstype == 'ai'){                           // if AI TTS is being used
+            const vlabel = aivoices.list[avlist.value].label;   // get the voice that is being used
+            kttsWorker.callback = haveAudio;                    // function to call when the audio is ready
+            kttsWorker.postMessage({action: 'generate', text: a[0].text, voice: vlabel}); // text passed to the Kokoro TTS worker
+        } else {                                        // if Browser TTS is being used
+            readIt.setVoicei(bvoices.index);            // Set the voice used in the Browser TTS
+            readIt.speak(a[0].text, talkStartBrowser);  // Speak the text -- on start, this function also calls the animation code
+            addComment('bot', a[0].text);               // adds the response to the user interface
+        }
+    } else { // if no audio is selected
+        addComment('bot', a[0].text);   // adds the comment to the UI
+        uprompt.focus();                // sets the focus to the user text box to get ready for the next question
     }
 }
 
@@ -580,42 +645,45 @@ function addComment(who, text) {
 
 //------------------------------------------- VOICE functions
 
-function updateVoices() {
+function setBrowserVoices() {
+    const browservoices = readIt.getVoiceList();
+    bvoices.list = [];
+    let counter = 0;
+    for(let i=0; i<browservoices.length; i++) {
+        if(browservoices[i].lang == 'en-US' || browservoices[i].lang == 'en-GB') {
+            bvoices.list.push({label: browservoices[i].voiceURI, name: browservoices[i].name, language: browservoices[i].lang, index: i,});
+            var opt = document.createElement('option');
+            opt.value = counter;
+            opt.innerHTML = `${bvoices.list[counter].name}`;
+            bvlist.appendChild(opt);
+            counter++;
+        }
+    }
+    bvlist.value = 0;
+    bvoices.index = bvoices.list[bvlist.value].index;
+
+    readIt.setOnEnd(talkStop);
+}
+
+function updateAIVoices() {
     let g = 'Female', l = 'en-us';
     if(gender.value == 1) {g = 'Male'};
     if(lang.value == 1) {l = 'en-gb'};
     
-    voices.index = 0;
-    vlist.innerHTML = '';
-    for(let i=0; i<voices.list.length; i++) {
-        if(voices.list[i].gender != g || voices.list[i].language != l) continue;
+    aivoices.index = 0;
+    avlist.innerHTML = '';
+    for(let i=0; i<aivoices.list.length; i++) {
+        if(aivoices.list[i].gender != g || aivoices.list[i].language != l) continue;
 
         var opt = document.createElement('option');
         opt.value = i;
-        opt.innerHTML = `${voices.list[i].name}`;
-        vlist.appendChild(opt);
+        opt.innerHTML = `${aivoices.list[i].name}`;
+        avlist.appendChild(opt);
     }
 }
 
 function inputChange() {
     audarea.style.display = 'none';
-}
-
-async function generateAudio() {
-    const text = stext.value;
-    if(text.length < 1) return;
-
-    const spokenText = text.toLowerCase();
-    const vowelStream = spokenText.replace(/[^aeiou]/g, '').split('');
-    appState.vowelStream = vowelStream;
-    appState.vowelIndex = 0;
-
-
-    const vlabel = voices.list[vlist.value].label;
-
-    //kttsWorker.aistatus.innerHTML = 'Generating speech...';
-    kttsWorker.callback = haveAudio;
-    kttsWorker.postMessage({action: 'generate', text: text, voice: vlabel});
 }
 
 function haveAudio(result) {
@@ -629,12 +697,50 @@ function haveAudio(result) {
     audplayer.play();
 }
 
-function talkStart() {
+function talkStartBrowser() {
+    if (appState.talking) return;
+
+    const vrm = environVRM.vrm();
+    if (!vrm || !vrm.expressionManager) return;
+    appState.talking = true;
+
+    let currentValue = 0;
+    let lastSwitchTime = performance.now();
+    let currentViseme = 'aa';
+
+    function animateMouth() {
+        if (!appState.talking) return;
+
+        const now = performance.now();
+
+        // === Viseme cycling every 120ms based on vowel text ===
+        if (now - lastSwitchTime > 120 && appState.vowelStream?.length > 0) {
+            const v = appState.vowelStream[appState.vowelIndex % appState.vowelStream.length];
+            currentViseme = vowelVisemeMap[v] || 'aa';
+            appState.vowelIndex++;
+            lastSwitchTime = now;
+        }
+
+        currentValue = 0.7;
+        const outputValue = currentValue < appState.gate ? 0 : currentValue;
+        //console.log(outputValue);
+
+        // === Drive only the current viseme ===
+        mouthShapes.forEach(name => vrm.expressionManager.setValue(name, 0));
+        vrm.expressionManager.setValue(currentViseme, outputValue);
+        vrm.expressionManager.update();
+
+        requestAnimationFrame(animateMouth);
+    }
+
+    animateMouth();
+}
+
+function talkStartAI() {
     if (appState.talking) return;
 
     const vrm = environVRM.vrm();
     if (!vrm || !vrm.expressionManager || !appState.analyser || !appState.dataArray) return;
-
     appState.talking = true;
 
     let currentValue = 0;
@@ -686,10 +792,11 @@ function talkStop() {
     const vrm = environVRM.vrm();
     if (!vrm || !vrm.expressionManager) return;
 
-    vrm.expressionManager.setValue('aa', 0);
+    mouthShapes.forEach(name => vrm.expressionManager.setValue(name, 0));
     vrm.expressionManager.update();
     uprompt.focus();
 }
+
 
 //----------------------------------------------------- BLINKING
 

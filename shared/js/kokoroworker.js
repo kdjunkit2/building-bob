@@ -5,6 +5,7 @@ onmessage = function(msg) {
     console.log('KTTS Message received from main: ', info);
     
     if(info.action == 'load') {if(info.device) kttsModel.loadModel(info.device); else kttsModel.loadModel(); return;}
+    if(info.action == 'unload') {kttsModel.unloadModel(); return;}
     if(info.action == 'voices') {return kttsModel.getVoices();}
     if(info.action == 'generate') {kttsModel.generate(info.text, info.voice); return;}
     console.log('invalid KTTS message');
@@ -16,6 +17,14 @@ class xenKTTSModelClass {
         this.modelId = "onnx-community/Kokoro-82M-v1.0-ONNX"
         this.type = 'text-to-speech';
 
+        this.tmstart = 0
+        this.tmend = 0;
+        this.loadFile = [];
+        this.loadProg = [];
+    }
+
+    unloadModel() {
+        this.model = null;
         this.tmstart = 0
         this.tmend = 0;
         this.loadFile = [];

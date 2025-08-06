@@ -29,8 +29,21 @@
 </div>
 
 <div id='voicedlg' class='bobdlg' style="display: none;">
-    <div class='ctrli' style='height:30px;'><label class='ltextw' style='position:relative; top:2px;'>Voice: </label><label class="switch">&nbsp<input id='togglevoice' type="checkbox" checked><span class="tswitch"></span></label></div>
-    <div id='voice' style='background: #24323d; padding: 10px;'>
+    <div class='ctrli' style='height:30px;'><label class='ltextw' style='position:relative; top:2px;'>Voice: </label><label class="switch">&nbsp<input id='togglevoice' type="checkbox"><span class="tswitch"></span></label></div>
+    
+    <select id='ttstype' style='display: none; margin-left: 15px;'>
+        <option value='browser'>Browser</option>
+        <option value='ai'>AI (Kokoro)</option>
+    </select>
+    <br><br>
+    <div id='browservoice' style='display:none; background: #24323d; padding: 10px;'>
+        <div class='ltext'>Browser Voices: </div>
+        <select id='bvoicelist' style='margin-left: 20px;'></select>
+    </div>
+
+    <div id='aivoice' style='display:none; background: #24323d; padding: 10px;'>
+        <div class='ltext'>AI Voices: </div>
+
         <div class='ltext' id='genderlbl' style='width:50px; display: none;'>Female </div>
         <input type='range' id='gender' class='slider' style='width:50px; display: none;' min='0' max='1' value='1'/>
         <label class='ltext' id='gender2lbl' style='width:40px; text-align:right;  display: none;'>Male</label>
@@ -39,12 +52,15 @@
         <input type='range' id='language' class='slider' style='width:50px;' min='0' max='1' value='0'/>
         <label class='ltext' id='lang2lbl' style='width:40px; text-align:right;'>GB</label>
 
-        <select id='voicelist' style='margin-left: 20px;'></select>
+        <select id='avoicelist' style='margin-left: 20px;'></select>
     </div>
+    
     <div id='genvoice' style='background: #24323d; padding: 10px; margin-top: 10px;'>
         <div class='ltext' id='fmtlbl' style='width:40px; display: none;'>WAV </div>
         <input type='range' id='format' class='slider' style='width:50px; display: none;' min='0' max='1' value='0'/>
         <label class='ltext' id='fmt2lbl' style='width:40px; text-align:right; display: none;'>MP3</label>
     </div>
+    
+    <div id='ttsprogress' class='progress' style='margin-bottom: 5px;'></div>
     <div id='mouthdone' class='ctextbtn' style='display: block; margin-top: 10px; margin-bottom: 10px;'>Done</div>
 </div>

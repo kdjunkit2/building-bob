@@ -1,9 +1,9 @@
 <!-- <script src="https://cdn.jsdelivr.net/npm/lamejs/lame.min.js"></script>  for mp3 encoding -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/howler/dist/howler.min.js"></script> -->
 
-<SCRIPT language="javascript" src="../shared/js/window.js"></SCRIPT>
-<SCRIPT language="javascript" src="../shared/js/general.js"></SCRIPT>
-<SCRIPT language="javascript" src="../shared/js/local.js"></SCRIPT>
+<SCRIPT language="javascript" src="../shared/js/window.js"></SCRIPT> <!-- used for system popup windows and dragging windows -->
+<SCRIPT language="javascript" src="../shared/js/general.js"></SCRIPT> <!-- has some useful general functions for array management -->
+<SCRIPT language="javascript" src="../shared/js/local.js"></SCRIPT> <!-- useful functions for loading local files -->
 
 <LINK rel="stylesheet" type="text/css" href="../shared/css/main.css" />
 <LINK rel="stylesheet" type="text/css" href="../shared/css/ctrls.css" />
@@ -21,6 +21,7 @@
 <?php include 'forms/dlg.php';?>
 </body>
 
+<!-- the import map in this format is requred for the three-vrm library to load from cdn -->
 <script type="importmap">
     {
         "imports": {
@@ -32,8 +33,8 @@
 </script>
 
 <SCRIPT language="javascript" src="index.js" type="module"></SCRIPT>
-<SCRIPT language="javascript" src="js/workhandler.js"></SCRIPT>
-<SCRIPT language="javascript" src="js/model.js"></SCRIPT>
+<SCRIPT language="javascript" src="js/workhandler.js"></SCRIPT> <!-- webworkers for AI models -->
+<SCRIPT language="javascript" src="js/model.js"></SCRIPT> <!-- Model information used for selecting the main LLM brain -->
 
 <LINK rel="stylesheet" type="text/css" href="forms/bob.css" />
 
@@ -41,5 +42,5 @@
 
 <script type="module">
     import {appInit} from "./index.js";
-    appInit();
+    appInit();  // main entry point to the full example app of Bob
 </script>
