@@ -28,24 +28,14 @@ const appState = {
     ttstype: 'browser',
     modelID: '',
     usellm: false,
-    talking: false,
-    talkInterval: null,
-    analyser: null,
-    dataArray: null,
-    easing: 1.0,
-    gate: 0.00,
-    vowelStream: [],
-    vowelIndex: 0,
-    blinkTimer: null,
-    isBlinking: false,
-    startDelay: 100,
+    last: {
+        prompt: '',
+        response: '',
+    }
 }
 
 const justBob = new characterManager();
 justBob.add('Bob', "You are a helpful avatar named Bob who answers users questions. Answer as if you are Bob. Answer in the first person when talking about Bob since you are playing the role of Bob.");
-
-const mouthShapes = ['aa', 'ih', 'ou', 'e', 'oh'];
-const vowelVisemeMap = {a: 'aa', e: 'e', i: 'ih', o: 'oh', u: 'ou'};
 
 const tglvoice = document.getElementById('togglevoice');
 const ttstype = document.getElementById('ttstype');
@@ -145,7 +135,7 @@ function addListeners() {
     lang.addEventListener('change', (event) => {updateAIVoices(); inputChange();});
     avlist.addEventListener('change', (event) => {inputChange();});
 
-    audplayer.addEventListener('play', (event) => {setTimeout(() => talkStartAI(), appState.startDelay);});
+    audplayer.addEventListener('play', (event) => {setTimeout(() => talkStart());});
     audplayer.addEventListener('ended', (event) => {talkStop();});
     
     uprompt.addEventListener('keypress', (event) => {
@@ -599,16 +589,15 @@ function prompt() {
     uprompt.value = '';      // resets the text box to empty
     justBob.prompt(uq, promptResponse);  // Send the user's text to the character library -- the rest is done behind the scenes
                                          // promptResponse is where the results are returned when ready this can be a custom function
+    appState.last.prompt = uq;
+    appState.last.response = '';
+    thinking();
 }
 
 function promptResponse(a) {
+    appState.last.response = a[0].text;
+
     if(appState.useaudio) { // if audio is selected to be used
-        // This block if for animating bob's mouth which is not handled within the library, but is handled within
-        // this main index.js file - this is covered separately
-        const spokenText = a[0].text.toLowerCase();
-        const vowelStream = spokenText.replace(/[^aeiou]/g, '').split('');
-        appState.vowelStream = vowelStream;
-        appState.vowelIndex = 0;
         //---------------------------------------------------------------------
 
         if(appState.ttstype == 'ai'){                           // if AI TTS is being used
@@ -617,13 +606,58 @@ function promptResponse(a) {
             kttsWorker.postMessage({action: 'generate', text: a[0].text, voice: vlabel}); // text passed to the Kokoro TTS worker
         } else {                                        // if Browser TTS is being used
             readIt.setVoicei(bvoices.index);            // Set the voice used in the Browser TTS
-            readIt.speak(a[0].text, talkStartBrowser);  // Speak the text -- on start, this function also calls the animation code
+            readIt.speak(a[0].text, talkStart);  // Speak the text -- on start, this function also calls the animation code
             addComment('bot', a[0].text);               // adds the response to the user interface
         }
     } else { // if no audio is selected
         addComment('bot', a[0].text);   // adds the comment to the UI
         uprompt.focus();                // sets the focus to the user text box to get ready for the next question
     }
+}
+
+const thinkingParams = {
+    active: false,
+    aIndex: 5,
+    anim: [
+        ['...', '....', '.....', '......', '.......', '........', '.........', '..........', '...........', '............'],
+        ['\\', '|', '/', '-'],
+        ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'],
+        ['◐', '◓', '◑', '◒'],
+        ["◜", "◠", "◝", "◞", "◡", "◟"],
+        [ "(&nbsp;●&nbsp;&nbsp;&nbsp;&nbsp;)", "(&nbsp;&nbsp;●&nbsp;&nbsp;&nbsp;)", "(&nbsp;&nbsp;&nbsp;●&nbsp;&nbsp;)", "(&nbsp;&nbsp;&nbsp;&nbsp;●&nbsp;)", "(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;●)", "(&nbsp;&nbsp;&nbsp;&nbsp;●&nbsp;)", "(&nbsp;&nbsp;&nbsp;●&nbsp;&nbsp;)", "(&nbsp;&nbsp;●&nbsp;&nbsp;&nbsp;)", "(&nbsp;●&nbsp;&nbsp;&nbsp;&nbsp;)", "(●&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)" ],
+        [ "🕛 ", "🕐 ", "🕑 ", "🕒 ", "🕓 ", "🕔 ", "🕕 ", "🕖 ", "🕗 ", "🕘 ", "🕙 ", "🕚 " ],
+        [ "🌑 ", "🌒 ", "🌓 ", "🌔 ", "🌕 ", "🌖 ", "🌗 ", "🌘 " ],
+    ],
+    interval: 150,
+    index: 0,
+}
+
+function thinking() {
+    let html = `<div id="botthinking" class="botchat" style="width: 300px;">Thinking &nbsp;&nbsp;${thinkingParams.anim[thinkingParams.aIndex][thinkingParams.index]}</div>`;
+    stext.innerHTML += html;
+    stext.scrollTop = stext.scrollHeight;
+    thinkingParams.active = true;
+    setTimeout(thinkingNext, thinkingParams.interval);
+}
+
+function thinkingNext() {
+    if(!thinkingParams.active) return;
+    const tele = document.getElementById('botthinking');
+    if(!tele) return;
+
+    thinkingParams.index++;
+    if(thinkingParams.index >= thinkingParams.anim[thinkingParams.aIndex].length) thinkingParams.index = 0;
+    tele.innerHTML = `Thinking &nbsp;&nbsp;${thinkingParams.anim[thinkingParams.aIndex][thinkingParams.index]}`;    
+    setTimeout(thinkingNext, thinkingParams.interval);
+}
+
+function thinkingStop() {
+    thinkingParams.active = false;
+    thinkingParams.index = 3;
+    
+    const tele = document.getElementById('botthinking');
+    if(!tele) return;
+    tele.remove();
 }
 
 function addComment(who, text) {
@@ -633,6 +667,7 @@ function addComment(who, text) {
     if(who == 'bot') {
         classname = 'botchat';
         char = '<b>Bob:</b> ';
+        thinkingStop();
     } else {
         classname = 'userchat';
         char = '<b>You:</b> ';
@@ -697,153 +732,23 @@ function haveAudio(result) {
     audplayer.play();
 }
 
-function talkStartBrowser() {
-    if (appState.talking) return;
-
-    const vrm = environVRM.vrm();
-    if (!vrm || !vrm.expressionManager) return;
-    appState.talking = true;
-
-    let currentValue = 0;
-    let lastSwitchTime = performance.now();
-    let currentViseme = 'aa';
-
-    function animateMouth() {
-        if (!appState.talking) return;
-
-        const now = performance.now();
-
-        // === Viseme cycling every 120ms based on vowel text ===
-        if (now - lastSwitchTime > 120 && appState.vowelStream?.length > 0) {
-            const v = appState.vowelStream[appState.vowelIndex % appState.vowelStream.length];
-            currentViseme = vowelVisemeMap[v] || 'aa';
-            appState.vowelIndex++;
-            lastSwitchTime = now;
-        }
-
-        currentValue = 0.7;
-        const outputValue = currentValue < appState.gate ? 0 : currentValue;
-        //console.log(outputValue);
-
-        // === Drive only the current viseme ===
-        mouthShapes.forEach(name => vrm.expressionManager.setValue(name, 0));
-        vrm.expressionManager.setValue(currentViseme, outputValue);
-        vrm.expressionManager.update();
-
-        requestAnimationFrame(animateMouth);
-    }
-
-    animateMouth();
-}
-
-function talkStartAI() {
-    if (appState.talking) return;
-
-    const vrm = environVRM.vrm();
-    if (!vrm || !vrm.expressionManager || !appState.analyser || !appState.dataArray) return;
-    appState.talking = true;
-
-    let currentValue = 0;
-    let lastSwitchTime = performance.now();
-    let currentViseme = 'aa';
-
-    function animateMouth() {
-        if (!appState.talking) return;
-
-        const now = performance.now();
-
-        // === Viseme cycling every 120ms based on vowel text ===
-        if (now - lastSwitchTime > 120 && appState.vowelStream?.length > 0) {
-            const v = appState.vowelStream[appState.vowelIndex % appState.vowelStream.length];
-            currentViseme = vowelVisemeMap[v] || 'aa';
-            appState.vowelIndex++;
-            lastSwitchTime = now;
-        }
-
-        // === Amplitude analysis ===
-        appState.analyser.getByteTimeDomainData(appState.dataArray);
-
-        let sum = 0;
-        for (let i = 0; i < appState.dataArray.length; i++) {
-            const val = appState.dataArray[i] - 128;
-            sum += val * val;
-        }
-        const rms = Math.sqrt(sum / appState.dataArray.length);
-        const targetValue = Math.min(rms / 32, 1.0);
-        currentValue += (targetValue - currentValue) * appState.easing;
-
-        const outputValue = currentValue < appState.gate ? 0 : currentValue;
-        //console.log(outputValue);
-
-        // === Drive only the current viseme ===
-        mouthShapes.forEach(name => vrm.expressionManager.setValue(name, 0));
-        vrm.expressionManager.setValue(currentViseme, outputValue);
-        vrm.expressionManager.update();
-
-        requestAnimationFrame(animateMouth);
-    }
-
-    animateMouth();
+function talkStart() {
+    const vrmmdl = environVRM.vrmModel();
+    vrmmdl.talkStart(appState.last.response);
 }
 
 function talkStop() {
-    appState.talking = false;
-
-    const vrm = environVRM.vrm();
-    if (!vrm || !vrm.expressionManager) return;
-
-    mouthShapes.forEach(name => vrm.expressionManager.setValue(name, 0));
-    vrm.expressionManager.update();
+    const vrmmdl = environVRM.vrmModel();
+    vrmmdl.talkStop();
     uprompt.focus();
 }
-
 
 //----------------------------------------------------- BLINKING
 
 function startBlinking() {
-    if (appState.blinkTimer) return;
-
-    const vrm = environVRM.vrm(); // get the vrm object variable
-    if (!vrm || !vrm.expressionManager) return;
-
-    function blinkOnce() {
-        if (!appState.isBlinking) return;
-
-        // Close eyes
-        vrm.expressionManager.setValue('blink', 1.0);
-        vrm.expressionManager.update();
-
-        // Open eyes after short delay
-        setTimeout(() => {
-            vrm.expressionManager.setValue('blink', 0.0);
-            vrm.expressionManager.update();
-
-            // Schedule next blink
-            scheduleNextBlink();
-        }, 100 + Math.random() * 100); // ~100ms blink
-    }
-
-    function scheduleNextBlink() {
-        const delay = 3000 + Math.random() * 2000; // 3–5 seconds randomly between blinks for a natural rate
-        appState.blinkTimer = setTimeout(blinkOnce, delay); // schedule the next blink
-    }
-
-    appState.isBlinking = true;
-    scheduleNextBlink();
+    const vrmmdl = environVRM.vrmModel();
+    vrmmdl.blinkStart();
 }
-
-function stopBlinking() {
-    appState.isBlinking = false;
-    clearTimeout(appState.blinkTimer);
-    appState.blinkTimer = null;
-
-    const vrm = environVRM.vrm();
-    if (vrm && vrm.expressionManager) {
-        vrm.expressionManager.setValue('blink', 0.0);
-        vrm.expressionManager.update();
-    }
-}
-
 
 //---------------------------------------------------- AUDIO FUNCTIONS
 

@@ -16,6 +16,12 @@ class vrmHandler {
             mirror: false,
             grounded: false,
             handPosed: 'default',
+            blinkTimer: null,
+            isBlinking: false,
+            talking: false,
+            vowelStream: [],
+            vowelIndex: 0,
+            vowelValue: 0.7,
         }
 
         
@@ -97,6 +103,60 @@ class vrmHandler {
         this.state.startPoints.lowestY = Infinity;
         this.state.handPosed = 'default';
         //vrmAppState.pose = null;
+    }
+
+    blinkStart() {
+        if(!this.state.currentVrm) {return;}
+        if(this.state.blinkTimer) return;
+
+        this.state.isBlinking = true;
+        Anim.blink(this.state);
+        this.blinkNext();
+    }
+
+    blinkNext() {
+        const delay = 3000 + Math.random() * 2000; // 3–5 seconds randomly between blinks for a natural rate
+        this.state.blinkTimer = setTimeout(() => {
+            this.blinkCycle();
+        }, delay); // schedule the next blink
+    }
+
+    blinkCycle() {
+        Anim.blink(this.state);
+        this.blinkNext();
+    }
+
+    blinkStop() {
+        this.state.isBlinking = false;
+        clearTimeout(this.state.blinkTimer);
+        this.state.blinkTimer = null;
+    
+        const vrm = this.state.currentVrm;
+        if (vrm && vrm.expressionManager) {
+            vrm.expressionManager.setValue('blink', 0.0);
+            vrm.expressionManager.update();
+        }
+    }
+
+    talkStart(utterance) {
+        if(!utterance) return;
+        if(!utterance.length) return;
+        if(!this.state.currentVrm) {return;}
+        if(this.state.talking) return;
+
+        const spokenText = utterance.toLowerCase();
+        const vowelStream = spokenText.replace(/[^aeiou]/g, '').split('');
+        this.state.vowelStream = vowelStream;
+        this.state.vowelIndex = 0;
+        this.state.talking = true;
+        Anim.talk(this.state);
+    }
+
+    talkStop() {
+        this.state.talking = false;
+        this.state.vowelStream = [];
+        this.state.vowelIndex = 0;
+        Anim.talkStop(this.state);    
     }
 }
 
@@ -226,12 +286,12 @@ class environment3Class {
     }
 
     toggleControls(active = null) {
-    if (active === null) {
-        this.controls.enabled = !this.controls.enabled;
-    } else {
-        this.controls.enabled = active;
+        if (active === null) {
+            this.controls.enabled = !this.controls.enabled;
+        } else {
+            this.controls.enabled = active;
+        }
     }
-}
 
 
     async loadVRMFromURL(url) {
@@ -642,11 +702,17 @@ class environmentManager {
         if(!environ.currentModel) return null;
         return environ.currentModel.state.currentVrm;
     }
-    vrmstate(name = '') {
+    vrmState(name = '') {
         const environ = this.getEnvironment(name);
         if(!environ) {console.warn('Could not get environment'); return null;}
         if(!environ.currentModel) return null;
         return environ.currentModel.state;
+    }
+    vrmModel(name = '') {
+        const environ = this.getEnvironment(name);
+        if(!environ) {console.warn('Could not get environment'); return null;}
+        if(!environ.currentModel) return null;
+        return environ.currentModel;
     }
     mirror(value, name = '') {
         const environ = this.getEnvironment(name);
@@ -659,7 +725,7 @@ class environmentManager {
         if(!environ) {console.warn('Could not get environment'); return;}
         if(!environ.currentModel) return null;
         environ.currentModel.state.grounded = value;
-        const vrmstate = this.vrmstate(name);
+        const vrmstate = this.vrmState(name);
         if(!vrmstate) return;
         Pose.autoGroundHips(vrmstate);
     }
@@ -678,32 +744,32 @@ class environmentManager {
     poseList() {return Pose.getPoseList();}
     poseExists(pname) {return Pose.poseExists(pname);}
     addPoseFromCurrent(pname) {
-        const state = this.vrmstate();
+        const state = this.vrmState();
         if(!state) return;
         Pose.addPoseFromCurrent(state, pname);
     }
     rotatePart(bone, x, y, z, name = '') {
-        const vrmstate = this.vrmstate(name);
+        const vrmstate = this.vrmState(name);
         if(!vrmstate) return;
         Pose.rotatePart(vrmstate, bone, x, y, z);
     }
     resetPose(name = '') {
-        const state = this.vrmstate(name);
+        const state = this.vrmState(name);
         if(!state) return;
         Pose.resetModel(state);
     }
     applyPose(pname, name = '') {
-        const state = this.vrmstate(name);
+        const state = this.vrmState(name);
         if(!state) return;
         Pose.applyPose(state, pname);
     }
     setHandPosition(hpose, name = '') {
-        const state = this.vrmstate(name);
+        const state = this.vrmState(name);
         if(!state) return;
         Pose.handPosition(state, hpose);
     }
     handPosed(name = '') {
-        const state = this.vrmstate(name);
+        const state = this.vrmState(name);
         if(!state) return;
         return state.handPosed;
     }
@@ -716,12 +782,12 @@ class environmentManager {
     animationLoop(index) {return Anim.getAnimationLoop(index);}
     animationFrames(index) {return Anim.getAnimationFrames(index);}
     playAnimation(ani, name = '') {
-        const state = this.vrmstate(name);
+        const state = this.vrmState(name);
         if(!state) return;
         return Anim.playPoseAnimation(state, ani);
     }
     stopAnimation() {
-        const state = this.vrmstate(name);
+        const state = this.vrmState(name);
         if(!state) return;
         Anim.stopPoseAnimation(state);
     }
@@ -733,8 +799,6 @@ class environmentManager {
 
 
 export const environVRM = new environmentManager(); 
-
-
 
 function animate() {
     if(!environVRM.environments.length) return;

@@ -6,6 +6,9 @@ export const animationLibrary = {};
 export let animationMixer = null;
 export let currentAction = null;
 
+const mouthShapes = ['aa', 'ih', 'ou', 'e', 'oh'];
+const vowelVisemeMap = {a: 'aa', e: 'e', i: 'ih', o: 'oh', u: 'ou'};
+
 export function animationExists(name) {return name in animationLibrary;}
 export function getAnimationList() {return [...Object.keys(animationLibrary)];}
 
@@ -66,6 +69,66 @@ export function stopPoseAnimation(state) {
         animationMixer.uncacheRoot(vrm.scene);
         animationMixer = null;
     }
+}
+
+export function blink(state) {
+    if(!state.isBlinking) return;
+
+    const vrm = state.currentVrm;
+    if (!vrm || !vrm.expressionManager) return;
+
+    // Close eyes
+    vrm.expressionManager.setValue('blink', 1.0);
+    vrm.expressionManager.update();
+
+    // Open eyes after short delay
+    setTimeout(() => {
+        vrm.expressionManager.setValue('blink', 0.0);
+        vrm.expressionManager.update();
+    }, 100 + Math.random() * 100); // ~100ms blink
+}
+
+export function talk(state) {
+    if(!state.talking) return;
+
+    const vrm = state.currentVrm;
+    if (!vrm || !vrm.expressionManager) return;
+
+    let lastSwitchTime = performance.now();
+    let currentViseme = 'aa';
+
+    function animateMouth() {
+        if (!state.talking) return;
+
+        const now = performance.now();
+
+        // === Viseme cycling every 120ms based on vowel text ===
+        if (now - lastSwitchTime > 120 && state.vowelStream?.length > 0) {
+            const v = state.vowelStream[state.vowelIndex % state.vowelStream.length];
+            currentViseme = vowelVisemeMap[v] || 'aa';
+            state.vowelIndex++;
+            lastSwitchTime = now;
+        }
+
+        const outputValue = state.vowelValue;
+
+        // === Drive only the current viseme ===
+        mouthShapes.forEach(name => vrm.expressionManager.setValue(name, 0));
+        vrm.expressionManager.setValue(currentViseme, outputValue);
+        vrm.expressionManager.update();
+
+        requestAnimationFrame(animateMouth);
+    }
+
+    animateMouth();
+}
+
+export function talkStop(state) {
+     const vrm = state.currentVrm;
+    if (!vrm || !vrm.expressionManager) return;
+
+    mouthShapes.forEach(name => vrm.expressionManager.setValue(name, 0));
+    vrm.expressionManager.update();
 }
 
 function createAnimationClipFromPoseTimeline(state, timeline) {
