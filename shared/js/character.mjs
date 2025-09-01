@@ -498,7 +498,8 @@ class characterClass {
         }
         const answer = this.knowledgeBase.ePrompt(result.data[0], topk, this.dontKnow);
         if(usellm) {
-            if(answer[0].question.length && answer[0].source == 'faq') {   // This means the primary answer is from an FAQ which takes precedent
+            if(answer[0].question.length && answer[0].source == 'faq') {    // This means the primary answer is from an FAQ which 
+                                                                            // takes precedent
                 if(callback) callback(answer);
                 return;
             }
@@ -508,7 +509,12 @@ class characterClass {
                 context += `${answer[i].text}\n`;
             }
 
-            const fsFAQ = this.knowledgeBase.fewShot(result.data[0], 10);
+            const fsFAQ = this.knowledgeBase.fewShot(result.data[0], 10);  // Gets up to 10 FAQ examples for few shot learning
+            // calls the helper function that actuall builds the prompt from:
+            // user query [textprompt]
+            // context: pulled from the text file information
+            // system role which can be set via the "this.role" variable
+            // answer length to let the LLM know the length of the response expected
             const messages = buildPrompt({textprompt: textprompt, context: context, sysrole: this.role,  answerlength: this.answerlength, faq: fsFAQ});
             Collector[`input_${collectorCounter}`] = {prompt: textprompt, rag: answer, messages: messages};
 
@@ -529,18 +535,26 @@ class characterClass {
 }
 
 function buildPrompt({textprompt, context, sysrole, answerlength, faq}) {
+    // if there is context, add it to the system prompt
     const system = context.length
         ? `${sysrole}\n\nHere is what you know:\n\nContext: ${context}`
         : `${sysrole}`;
 
+    // the user prompt contains the user query and the desired answer length from the LLM
     const userPrompt = `Question: ${textprompt}\n\n${answerlength}.\n\nAnswer:`;
 
     let prompt = [];
+    // the system prompt always goes first.
     prompt.push({ role: 'system', content: system });
+    // The few shot examples are added to the overall prompt and come after the system prompt
     for(let i=0; i<faq.length; i++) {
+        // these few shot examples act as a guide to let the LLM know how to respond.  they are always
+        // user / assistant pairs to show examples of what the user asked and how the model responded
+        // this gives the model examples of how it should respond to the actual user query.
         prompt.push({role: 'user', content: faq[i].question});
         prompt.push({role: 'assistant', content: faq[i].text});
     }
+    // finally the current user prompt is added to have the complete prompt sent to the LLM
     prompt.push({ role: 'user', content: userPrompt });
     console.log('fullprompt: ', prompt);
     return prompt
