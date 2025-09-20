@@ -52,34 +52,26 @@ class csvClass {
 
 			// Check to see if the given delimiter has a length (is not the start of string) and if it matches
 			// field delimiter. If id does not, then we know that this delimiter is a row delimiter.
-			if (
-				strMatchedDelimiter.length &&
-				(strMatchedDelimiter != strDelimiter)
-				){
-
+			if (strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter)){
 				// Since we have reached a new row of data, add an empty row to our data array.
 				arrData.push( [] );
-
 			}
-
 
 			// Now that we have our delimiter out of the way, let's check to see which kind of value we captured (quoted or unquoted).
 			if (arrMatches[2]){
-
 				// We found a quoted value. When we capture this value, unescape any double quotes.
-				var strMatchedValue = arrMatches[ 2 ].replace(
-					new RegExp( "\"\"", "g" ),
-					"\""
-					);
-
+				var strMatchedValue = arrMatches[ 2 ].replace(new RegExp( "\"\"", "g" ),"\"");
 			} else {
-
 				// We found a non-quoted value.
 				var strMatchedValue = arrMatches[3];
-
 			}
-			// Now that we have our value string, let's add it to the data array.
-			arrData[arrData.length - 1].push(strMatchedValue);
+			// Now that we have our value string, let's add it to the data array after checking if it is a number.
+			const testValue = +strMatchedValue;
+			if(Number.isFinite(testValue)) {
+				arrData[arrData.length - 1].push(testValue);
+			} else {
+				arrData[arrData.length - 1].push(strMatchedValue);
+			}
 		}
 
 		// Return the parsed data.

@@ -41,6 +41,13 @@ Core modules shared between apps:
 - Pose and animation handling
 - Embedding and LLM glue code with webworkers for non-thread blocking inference
 
+### [`extra/`](extra/)
+Optional side projects and experiments that build on or extend the core Bob system:
+- coach/ – A sports AI prototype using MLP-based play calling with style-based “coach personas”
+- players/ – A TensorFlow.js VAE demo for generating synthetic player profiles from latent space sampling
+
+These are standalone modules designed for exploration and learning, but they share architectural principles with the main Bob system.
+
 ---
 
 ## 🚀 Running Locally

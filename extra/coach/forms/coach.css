@@ -1,0 +1,180 @@
+@import "/shared/css/fonts.css";
+
+/* REMOVE THE DEFAULT FOCUS OUTLINE */
+input:focus, textarea:focus, select:focus, button:focus {outline-offset: 0px; outline: none;}
+
+div.lmtext {
+	display: inline-block;
+	padding: 5px;
+	font-family: "Xolonium-Regular"; 
+	font-size: 20px;
+	color: #abc0d1;
+	opacity: 0.9;
+	margin-right: 10px;
+}
+
+.iconbtn {
+	background-color: #6f899f;
+	padding: 4px;
+	border: none;
+	margin: 2px;
+	text-align: center;
+	vertical-align: middle;
+	display: inline-block;
+	transition-duration: 0.3s;
+	cursor: pointer;
+	cursor: hand;
+	border-radius: 10px;
+	-webkit-user-drag: none;
+}
+.iconbtn:hover {
+	background-color: #d1dde8;
+	border-radius: 10px;
+}
+
+.ctextbtn {
+	background-color: #24323d;
+	color: #abc0d1;
+	border: 1px solid #6f899f;
+	padding: 5px;
+	text-align: center;
+	vertical-align: middle;
+	display: inline-block;
+	transition-duration: 0.3s;
+	cursor: pointer;
+	border-radius: 10px;
+	/*width: 75px;*/
+	font-family: "Xolonium-Regular"; 
+	font-size: 16px;
+	margin-left: 2px;
+	margin-right: 2px;
+    -webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
+}
+.ctextbtn:hover {
+	background-color: #abc0d1;
+	color: #24323d;
+	border-radius: 10px;
+}
+
+div.sblabel {
+	display: inline-block;
+	padding: 5px;
+	font-family: "Xolonium-Regular"; 
+	font-size: 16px;
+	color: #ffffff;
+	opacity: 0.9;
+}
+
+div.sbtitle {
+	display: block;
+	padding: 5px;
+	font-family: "Xolonium-Regular"; 
+	font-size: 30px;
+	color: #ffffff;
+	opacity: 0.9;
+	text-align: center;
+}
+
+div.panel {
+	display: block;
+	padding: 5px;
+	padding-bottom: 10px;
+	border: 1px solid white;
+}
+
+div.paneltight {
+	display: block;
+	position: relative;
+	padding-top: 10px;
+	border: 1px solid white;
+}
+
+div.subpanel {
+	display: inline-block;
+	vertical-align: top;
+}
+
+div.group {
+	display: grid;
+  	align-items: center;
+}
+
+div.lights {
+	padding: 5px;
+	font-family: "Xolonium-Regular"; 
+	font-size: 14px;
+	border-radius: 7px;
+	background-color: #12191f;
+	text-align: center;
+	color: #E8D66B;
+	height: 20px;
+}
+
+div.result {
+	padding: 5px;
+	font-family: "Xolonium-Regular"; 
+	font-size: 25px;
+	border-radius: 7px;
+	text-align: center;
+	color: #13c940;
+	width: 280px;
+	text-align: right;
+}
+
+div.call {
+	padding: 5px;
+	font-family: "Xolonium-Regular"; 
+	font-size: 14px;
+	border-radius: 7px;
+	text-align: center;
+	color: #89af92;
+	width: 280px;
+	text-align: right;
+}
+
+div.tagline {
+	padding: 5px;
+	font-family: "Xolonium-Regular"; 
+	font-size: 12px;
+	border-radius: 7px;
+	background-color: #12191f;
+	text-align: center;
+	color: #928e78;
+}
+
+/* ==============================  SELECT */
+
+select.huge {
+	padding: 5px;
+	font-family: "Xolonium-Regular"; 
+	font-size: 40px;
+	border-radius: 7px;
+	background-color: #12191f;
+	border: 1px solid rgb(0,0,0,0);
+	color: #E8D66B;
+	min-width: 75px;
+}
+
+select.big {
+	padding: 5px;
+	font-family: "Xolonium-Regular"; 
+	font-size: 20px;
+	border-radius: 7px;
+	background-color: #12191f;
+	border: 1px solid rgb(0,0,0,0);
+	color: #E8D66B;
+	min-width: 75px;
+}
+
+select.small {
+	padding: 5px;
+	font-family: "Xolonium-Regular"; 
+	font-size: 14px;
+	border-radius: 7px;
+	background-color: #12191f;
+	border: 1px solid rgb(0,0,0,0);
+	color: #E8D66B;
+	min-width: 30px;
+}

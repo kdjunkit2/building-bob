@@ -122,6 +122,13 @@ function scaleArray(array, newMin, newMax) {
     });
 }
 
+function normalizeArray(array) {
+	if(!array) return [];
+	if(!array.length) return [];
+	const sum = array.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+	return array.map(element => element / sum);
+}
+
 function scaleFactorArray(array, factor) {
 	if(!array) return [];
 	if(!array.length) return [];
@@ -244,6 +251,37 @@ function maxPoolArrays(arrayOfArrays) {
 	}
 
 	return maxes;
+}
+
+//------------------------------------------------------------  SIMILARITY FUNCTIONS
+
+const dotp = (a,b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);
+
+function cosineSimilarity(a, b) {
+	var magA = Math.sqrt(dotp(a, a)); // Computes magnitude of vector a
+	var magB = Math.sqrt(dotp(b, b)); // Computes magnitude of vector b
+	if (magA && magB) return dotp(a, b) / (magA * magB); // Computes cosine similarity
+	  else return -1;
+}
+
+function similarityArray(a, b, topk=0) { // where 'a' is an array of 1 and b is the full array to compare to
+	if(a.length != 1) {console.warn('similarityArray: first parameter must be an array of 1'); return;}
+	if(a[0].length != b[0].length) {console.warn(`similarityArray: array size mismatch (${a[0].length}, ${b[0].length})`); return;}
+	let blen = b.length;
+	let simresults = [];
+	if(blen < 1) {return simresults;}
+	let i;
+	for(i=0; i<blen; i++) {
+        const v = cosineSimilarity(a[0], b[i]);
+		simresults.push({index: i, value: v});
+	}
+	simresults.sort(function(a, b) {
+		return ((a.value < b.value) ? 1 : ((a.value == b.value) ? 0 : -1));
+	});
+  
+	if(topk < 1) return simresults;
+	let count = Math.min(topk, simresults.length);
+	return simresults.slice(0, count);
 }
 
 //========================================== COLOR CONVERSION =====================================

@@ -32,6 +32,8 @@ body.lightmode {
 .basiclbl {font-family: verdana, arial, sans-serif; font-size: 1em; color: rgb(32,32,32);}
 .basictitledk {font-family: verdana, arial, sans-serif; font-size: 32px;; color: rgb(64,64,64);}
 
+.basicxrb {font-family: "Xolonium-Regular"; font-size: 1em; color: #000000;}
+
 .hand {cursor:hand; cursor:pointer;}
 .grabbing {cursor: grab;}
 .grabbing:active {cursor: grabbing;}
