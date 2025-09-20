@@ -1,4 +1,6 @@
 <div id='braindlg' class='bobdlg' style="display: none;">
+    <div class='ctrli' style='height:30px;'><label class='ltextw' style='position:relative; top:2px;'>CPU Only: </label><label class="switch">&nbsp<input id='togglecpuonly' type="checkbox"><span class="tswitch"></span></label></div>
+    <br>
     <div id='gpumsg' class='ltext'></div><br>
     <div class='ltext' style='margin-bottom: 30px;'>The first time you load a model, it may take awhile.  The models are stored in the browser cache which will speed up future loads unless the model has been removed from the cache.</div>
     <div class='ctrl' style='margin-bottom: 15px;'><label class='ltextw' style='position:relative; top:2px;'>Give Bob extra brain power: </label><label class="switch">&nbsp<input id='usellm' type="checkbox"><span class="tswitch"></span></label></div>

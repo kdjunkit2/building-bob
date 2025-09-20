@@ -1,5 +1,5 @@
 import { environVRM } from '../shared/js/environvrm.mjs';
-import { localSystem, characterManager, collectorToConsole } from '../shared/js/character.mjs'
+import { localSystem, characterManager } from '../shared/js/character.mjs'
 import { readIt } from '../shared/js/bspeech.mjs'
 
 const aivoices = {
@@ -28,6 +28,7 @@ const appState = {
     ttstype: 'browser',
     modelID: '',
     usellm: false,
+    forceCPU: false,
     last: {
         prompt: '',
         response: '',
@@ -70,14 +71,6 @@ function addListeners() {
 
     setBrowserVoices();
 
-    document.addEventListener('keydown', (e) => {
-        // Ctrl+Shift+C as the combo (adjust if needed)
-        if (e.ctrlKey && e.shiftKey && e.code === 'KeyC') {
-            collectorToConsole();
-            console.log('%c[Collector dumped to console]', 'color: limegreen; font-weight: bold;');
-        }
-    });
-
     document.getElementById('mouth').addEventListener('click', (event) => {showVoiceDlg();});
     tglvoice.addEventListener('change', (event) => {
         if(tglvoice.checked) {
@@ -114,6 +107,10 @@ function addListeners() {
     document.getElementById('kbase').addEventListener('click', (event) => {knowledgeDlg();});
     document.getElementById('kbdone').addEventListener('click', (event) => {closeKBDlg();});
 
+    document.getElementById('togglecpuonly').addEventListener('change', (event) => {
+        appState.forceCPU = document.getElementById('togglecpuonly').checked;
+        setupModels();
+    });
     usellm.addEventListener('change', (event) => {
         if(usellm.checked) {
             selmdl.disabled = false;
@@ -162,6 +159,7 @@ function setupModels() {
 
     // Add model options to select element
     let count = modelInfo.length;
+    const useGPU = localSystem.gpu.available && !appState.forceCPU;
 
     selmdl.innerHTML = '';
     let index = -1;
@@ -172,8 +170,8 @@ function setupModels() {
         selmdl.appendChild(opt);
     } else {
         for(let i=0; i<count; i++) {
-            if(localSystem.gpu.available && modelInfo[i].gpu == 'no') continue;
-            if(!localSystem.gpu.available && modelInfo[i].gpu == 'yes') continue;
+            if(useGPU && modelInfo[i].gpu == 'no') continue;
+            if(!useGPU && modelInfo[i].gpu == 'yes') continue;
 
             const opt = document.createElement('option');
             opt.value = i;
@@ -269,6 +267,7 @@ async function loadLLM() {
 
     const bobmdlparams = {
         usellm: appState.usellm,
+        forceCPU: appState.forceCPU,
         llmModelId: modelID,
         llmCallback: modelLoaded,
     }

@@ -3,13 +3,11 @@ import { sysDevicesInitialize } from './device.mjs';
 
 export const localSystem = await sysDevicesInitialize();
 
-const Collector = {};
-let collectorCounter = 0;
-
 export class characterManager {
     constructor(name = '') {
         this.characters = [];
         this.useLLM = false;
+        this.forceCPU = false;
         this.ready = {
             embedding: false,
             llm: true,
@@ -65,8 +63,9 @@ export class characterManager {
         if(params.usellm && params.llmModelId.length) {
             this.useLLM = true;
             this.ready.llm = false;
+            const gpu = localSystem.gpu.available && !params.forceCPU;
             llmWorker.callback = (e) => {this.modelLoaded(e, params.llmCallback);};
-            llmWorker.postMessage({action: 'load', model: modelInfo[modelIndex].modelid, gpu: localSystem.gpu.available});
+            llmWorker.postMessage({action: 'load', model: modelInfo[modelIndex].modelid, gpu: gpu});
         } else {
             this.useLLM = false;
             this.ready.llm = true;
@@ -90,8 +89,9 @@ export class characterManager {
         if(params.usellm && params.llmModelId.length) {
             this.useLLM = true;
             this.ready.llm = false;
+            const gpu = localSystem.gpu.available && !params.forceCPU;
             llmWorker.callback = (e) => {this.modelLoaded(e, params.llmCallback);};
-            llmWorker.postMessage({action: 'load', model: modelInfo[modelIndex].modelid, gpu: localSystem.gpu.available});
+            llmWorker.postMessage({action: 'load', model: modelInfo[modelIndex].modelid, gpu: gpu});
         } else {
             if(this.useLLM) {llmWorker.postMessage({action: 'unload'});}
             this.useLLM = false;
@@ -516,20 +516,23 @@ class characterClass {
             // system role which can be set via the "this.role" variable
             // answer length to let the LLM know the length of the response expected
             const messages = buildPrompt({textprompt: textprompt, context: context, sysrole: this.role,  answerlength: this.answerlength, faq: fsFAQ});
-            Collector[`input_${collectorCounter}`] = {prompt: textprompt, rag: answer, messages: messages};
-
-            llmWorker.callback = (e) => {this.llmResponse(e, callback);};
+            
+            const entry = {qe: result.data[0], q: textprompt, a:''};
+            llmWorker.callback = (e) => {this.llmResponse(e, callback, entry);};
             llmWorker.postMessage({action: 'generate', messages: messages});
 
         } else {
+            if(answer[0].match > 0 && answer[0].source != 'faq') {  // found a match, but not already from FAQ
+                const faeresult = this.knowledgeBase.faqAddEntry(result.data[0], textprompt, answer[0].text); 
+                if(faeresult.error) {console.warn(faeresult.error);}           
+            }
             if(callback) callback(answer);
         }
     }
 
-    llmResponse(response, callback) {
-        const answer = [{text: response.result, question: 'llm response', match: 0, v: 0, d: 0}];
-        Collector[`output_${collectorCounter}`] = {response: response.result};
-        collectorCounter++;
+    llmResponse(response, callback, entry) {
+        const answer = [{text: response.result, question: entry.q, match: 0, v: 0, d: 0}];
+        this.knowledgeBase.faqAddEntry(entry.qe, entry.q, response.result); 
         if(callback) callback(answer);
     }
 }
@@ -558,9 +561,4 @@ function buildPrompt({textprompt, context, sysrole, answerlength, faq}) {
     prompt.push({ role: 'user', content: userPrompt });
     console.log('fullprompt: ', prompt);
     return prompt
-}
-
-
-export function collectorToConsole() {
-    console.log(JSON.stringify(Collector));
 }

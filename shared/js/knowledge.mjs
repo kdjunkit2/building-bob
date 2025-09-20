@@ -25,7 +25,7 @@ class faqHandler {
         
         const result = await csvHandler.fromURL(url);
         const fields = result[0].length;
-        if(fields < 2) {return {error: 'Expected more than 2 columns'};}
+        if(fields < 2) {return {error: 'Expected more than 2 columns (Question, Answer, Type)'};}
         this.reset();
         this.name = name;
 
@@ -34,7 +34,7 @@ class faqHandler {
             if(!result[i][0].length) continue;
             this.q.push(result[i][0]);
             this.a.push(result[i][1]);
-            if(fields > 2) this.type.push(result[i][2]);
+            this.type.push(result[i][2]);
         }
         return {success: 'FAQ loaded'};
     }
@@ -65,6 +65,20 @@ class faqHandler {
         if(e.length != this.q.length) {return {error: `Eembeddings length mismatch (${this.q.length}, ${e.length})`};}
         this.qe = [...e];
         return {success: 'Embeddings set'};
+    }
+
+    addEntry(qe, q, a, type = 'user') {
+        if(!qe || !q || !a) {
+            console.log(qe, q, a);
+            return {error: 'FAQ addEntry missing parameters'};
+        }
+        if(qe.length != this.qe[0].length) {return {error: 'FAQ addEntry missing parameters'};}
+        this.qe.push(qe);
+        this.q.push(q);
+        this.a.push(a);
+        this.type.push(type);
+        console.log('FAQ added: ', {qe: qe, q: q, a: a, type, type});
+        return {success: 'FAQ entry added'};
     }
 
 }
@@ -159,6 +173,7 @@ export class knowledgeHandler {
     faqEmbeddings(e) {return this.faq.setEmbeddings(e);}
     faQuestions() {return this.faq.q;}
     hasFAQ() {if(this.faq.q.length) return true; else return false;}
+    faqAddEntry(qe, q, a, type = 'user') {return this.faq.addEntry(qe, q, a, type);}
     
     async addInfo(url, name = '') {
         if(!url) return {error: 'No URL provided'};

@@ -321,9 +321,7 @@ class xenModelClass {
 			top_p: 0.9 ?? mparams.top_p,
 		});
 
-		console.log(output);
 		let result = output[0].generated_text[messages.length].content;
-		console.log(result);
 		
 		this.tmend = performance.now();
 		let time = (this.tmend - this.tmstart)/1000;
