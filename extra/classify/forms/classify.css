@@ -1,0 +1,54 @@
+@import "/shared/css/fonts.css";
+
+.result {font-family: "Xolonium-Regular"; font-size: 18px; color: #abc0d1;}
+
+.step {
+    width: 100px; 
+    text-align: center; 
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 3px solid #49637a;
+    font-family: "Xolonium-Regular"; 
+	font-size: 14px;
+}
+
+.menublock {
+    display: inline-block; 
+    background-color: #49637a; 
+    width: 125px; 
+    height: 400px;
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+}
+
+.menubar {
+    background-color: #49637a; 
+    padding: 5px;
+    margin: 5px; 
+}
+
+.cpanel {
+    display: inline-block;
+    vertical-align: top;
+    width: 400px;
+    height: 400px;
+    padding: 5px;
+    margin: 5px;
+    background-color: #2e3e4d;
+    font-family: "Xolonium-Regular"; 
+	font-size: 14px;
+}
+
+.cpanelw {
+    display: inline-block;
+    vertical-align: top;
+    width: 800px;
+    height: 400px;
+    padding: 5px;
+    margin: 5px;
+    background-color: #2e3e4d;
+    font-family: "Xolonium-Regular"; 
+	font-size: 14px;
+}

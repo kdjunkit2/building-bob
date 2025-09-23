@@ -368,6 +368,8 @@ class characterClass {
             knowledgeEmbedded: true,
             knowledgeCount: 0,
         }
+        this.recentLog = [];
+        this.keepTurns = 5;
         this.ekStatus = {};
         this.ekCount = 0;
         this.role = sysrole;
@@ -484,6 +486,13 @@ class characterClass {
         this.knowledgeBase.dontKnow = text;
     }
 
+    _logAnswer(answer) {
+        this.recentLog.push(answer);
+        if(this.recentLog.length > this.keepTurns) {
+            this.recentLog.shift();
+        }
+    }
+
     prompt(text, callback, usellm) {
         llmWorker.ecallback = (e) => {this.ePrompt(e, callback, usellm, text);};
         llmWorker.postMessage({action: 'embed', sentences: [text], q: 5, tag: 'prompt'});
@@ -500,6 +509,8 @@ class characterClass {
         if(usellm) {
             if(answer[0].question.length && answer[0].source == 'faq') {    // This means the primary answer is from an FAQ which 
                                                                             // takes precedent
+                this._logAnswer(answer[0]);
+                console.log(answer[0]);
                 if(callback) callback(answer);
                 return;
             }
@@ -515,7 +526,7 @@ class characterClass {
             // context: pulled from the text file information
             // system role which can be set via the "this.role" variable
             // answer length to let the LLM know the length of the response expected
-            const messages = buildPrompt({textprompt: textprompt, context: context, sysrole: this.role,  answerlength: this.answerlength, faq: fsFAQ});
+            const messages = buildPrompt({textprompt: textprompt, context: context, sysrole: this.role,  answerlength: this.answerlength, faq: fsFAQ, recent: this.recentLog});
             
             const entry = {qe: result.data[0], q: textprompt, a:''};
             llmWorker.callback = (e) => {this.llmResponse(e, callback, entry);};
@@ -526,6 +537,8 @@ class characterClass {
                 const faeresult = this.knowledgeBase.faqAddEntry(result.data[0], textprompt, answer[0].text); 
                 if(faeresult.error) {console.warn(faeresult.error);}           
             }
+            if(!answer[0].question.length) answer[0].question = textprompt;
+            this._logAnswer(answer[0]);
             if(callback) callback(answer);
         }
     }
@@ -533,11 +546,12 @@ class characterClass {
     llmResponse(response, callback, entry) {
         const answer = [{text: response.result, question: entry.q, match: 0, v: 0, d: 0}];
         this.knowledgeBase.faqAddEntry(entry.qe, entry.q, response.result); 
+        this._logAnswer(answer[0]);
         if(callback) callback(answer);
     }
 }
 
-function buildPrompt({textprompt, context, sysrole, answerlength, faq}) {
+function buildPrompt({textprompt, context, sysrole, answerlength, faq, recent}) {
     // if there is context, add it to the system prompt
     const system = context.length
         ? `${sysrole}\n\nHere is what you know:\n\nContext: ${context}`
@@ -550,13 +564,20 @@ function buildPrompt({textprompt, context, sysrole, answerlength, faq}) {
     // the system prompt always goes first.
     prompt.push({ role: 'system', content: system });
     // The few shot examples are added to the overall prompt and come after the system prompt
-    for(let i=0; i<faq.length; i++) {
+    let i;
+    for(i=0; i<faq.length; i++) {
         // these few shot examples act as a guide to let the LLM know how to respond.  they are always
         // user / assistant pairs to show examples of what the user asked and how the model responded
         // this gives the model examples of how it should respond to the actual user query.
         prompt.push({role: 'user', content: faq[i].question});
         prompt.push({role: 'assistant', content: faq[i].text});
     }
+    for(i=0; i<recent.length; i++) {
+        console.log('recent: ', recent[i]);
+        prompt.push({role: 'user', content: recent[i].question});
+        prompt.push({role: 'assistant', content: recent[i].text});
+    }
+
     // finally the current user prompt is added to have the complete prompt sent to the LLM
     prompt.push({ role: 'user', content: userPrompt });
     console.log('fullprompt: ', prompt);

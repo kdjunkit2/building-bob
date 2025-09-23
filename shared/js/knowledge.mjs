@@ -77,7 +77,6 @@ class faqHandler {
         this.q.push(q);
         this.a.push(a);
         this.type.push(type);
-        console.log('FAQ added: ', {qe: qe, q: q, a: a, type, type});
         return {success: 'FAQ entry added'};
     }
 
@@ -264,7 +263,7 @@ export class knowledgeHandler {
         let answers = [];
         if(this.faq.qe.length) {
             const cossim = simArray([e], this.faq.qe, topk);            
-            for(let i=0; i<cossim.length; i++) {
+            for(let i=cossim.length-1; i>=0; i--) {
                 answers.push({text: this.faq.a[cossim[i].index], question: this.faq.q[cossim[i].index]});
             }
             return answers;

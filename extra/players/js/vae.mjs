@@ -265,10 +265,11 @@ export class TabularVAE {
             // if you prefer to free 'std' later, keep it; otherwise .clone() and dispose original
         }
 
+        const betaDelta = 0.2;
 
         const epochs   = opts.epochs    ?? 50;
         const shuffle  = opts.shuffle   ?? true;
-        const beta     = opts.beta      ?? 1/this._cfg.latentDim * 0.2;
+        const beta     = opts.beta      ?? 1/this._cfg.latentDim * betaDelta;
         const n        = this._n;
         const batchSz  = opts.batchSize ?? Math.min(128, Math.max(16, Math.floor(n / 20)));
 
@@ -288,7 +289,7 @@ export class TabularVAE {
 
             let batches = 0;
             let epochLoss = 0;
-            const betaNow = Math.min(1/this._cfg.latentDim*0.2, Math.min(beta, (epoch+1)/epochs * beta));
+            const betaNow = Math.min(1/this._cfg.latentDim*betaDelta, Math.min(beta, (epoch+1)/epochs * beta));
 
             for (let start = 0; start < n; start += batchSz) {
                 const end = Math.min(start + batchSz, n);

@@ -200,16 +200,20 @@ class webllmModelClass {
 		if(q < 0) q = 0;
 		if(q > 15) q = 15;
 
-		const output = await this.emodel.embeddings.create({ input: sentences });
-		let len = output.data.length;
 		let embeddings = [];
-		for(let i=0; i<len; i++) {
-			if(q>0) {
-				embeddings.push(output.data[i].embedding.map(function(x) {return +x.toFixed(q);}));
-			} else {
-				embeddings.push(output.data[i].embedding)
-			};
-			postMessage({action: 'embed', status: 'embedding', progress: i/len*100, tag: tag});
+		let i = 0, j, len = sentences.length, batchsize = 200;
+		for(i=0; i<len; i+= batchsize) {
+			const end = Math.min(i+batchsize, len);
+			const input = sentences.slice(i, end);
+			const output = await this.emodel.embeddings.create({ input: input });
+			for(j=0; j<end - i; j++) {
+				if(q>0) {
+					embeddings.push(output.data[j].embedding.map(function(x) {return +x.toFixed(q);}));
+				} else {
+					embeddings.push(output.data[j].embedding)
+				};
+			}
+			postMessage({action: 'embed', status: 'embedding', progress: (i+1)/len*100, tag: tag});
 		}
 
 		let time;

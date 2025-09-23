@@ -152,7 +152,7 @@ async function trainPlayerModel() {
     players.model.build();
 
     await players.model.train({
-        beta: 0.001,
+        beta: 0.05,
         epochs: 75,
         onEpochEnd: (e, logs, beta) => trainingProgress(e, logs, beta)
     });
@@ -546,7 +546,7 @@ function predictPosition(arr, real) {
                         if(real[2] < 190) predpos = 2;
                         else predpos = 1;
                     } else {
-                        if(block > 50 && real[2] > 230 || real[0] < 75) predpos = 3;
+                        if(block > 50 && real[2] > 240 || real[0] < 75) predpos = 3;
                         else predpos = 2;
                     }
                 }

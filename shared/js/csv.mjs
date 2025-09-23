@@ -43,7 +43,6 @@ class csvClass {
 		// Create an array to hold our individual pattern matching groups.
 		var arrMatches = null;
 
-
 		// Keep looping over the regular expression matches until we can no longer find a match.
 		while (arrMatches = objPattern.exec( strData )){
 
@@ -66,14 +65,17 @@ class csvClass {
 				var strMatchedValue = arrMatches[3];
 			}
 			// Now that we have our value string, let's add it to the data array after checking if it is a number.
-			const testValue = +strMatchedValue;
-			if(Number.isFinite(testValue)) {
-				arrData[arrData.length - 1].push(testValue);
-			} else {
-				arrData[arrData.length - 1].push(strMatchedValue);
+			if(strMatchedValue.length) {
+				const testValue = +strMatchedValue;
+				if(Number.isFinite(testValue)) {
+					arrData[arrData.length - 1].push(testValue);
+				} else {
+					arrData[arrData.length - 1].push(strMatchedValue);
+				}
 			}
 		}
 
+		arrData = arrData.filter(innerArray => innerArray.length > 0); // remove blank lines;
 		// Return the parsed data.
 		return arrData;
 	}

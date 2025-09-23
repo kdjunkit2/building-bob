@@ -27,7 +27,7 @@ function openLocalReady(e, type) {
 	
 	if(type === 'text') {
 		//console.log('type', localFile.type);
-		if (localFile.type != 'text/plain' && localFile.type != 'text/csv' && localFile.type !='') {
+		if (localFile.type != 'text/plain' && localFile.type != 'text/csv' && localFile.type != 'application/json' && localFile.type !='') {
 			if(sysWindow) {sysWindow.alert('File Error', 'File is not text.');}
 			else {alert('File is not text.');}
 			return;

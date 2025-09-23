@@ -81,6 +81,23 @@
     </div>
 </div>
 
+<div id='mpanel5' class='appPanel child'>
+    <div id='coach' class='appPanelItem hand' onclick="window.location.href='extra/classify'">
+        <img src='/assets/classify.png' style='position:relative; top:5px;' draggable='false' />
+        <span style='position:relative; top:0px;'>Classifier</span>
+    </div>
+    <div style='position:relative; top:10px;'>
+        <span class='techmid3l'>Text Classifier</span><br>
+        <ul class='techbasic3m' style="padding-left:30px">
+            <li>Multi-layer Perceptrons (MLP)</li>
+			<li>Brain.js neural networks</li>
+			<li>GPU support</li>
+			<li>Text embedding</li>
+			<li>Text classification</li>
+        </ul>
+    </div>
+</div>
+
 </body>
 <SCRIPT language="javascript" src="index.js"></SCRIPT>
 <script>

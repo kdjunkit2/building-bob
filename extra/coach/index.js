@@ -407,30 +407,30 @@ function fgModifier(spot, down, dist, lead, clock) {
 const LABELS = ['RUSH','PASS','PUNT','FIELD_GOAL'];
 
 function softmaxNormalize(raw, temperature = 1.0) {
-  const vals = LABELS.map(k => (raw[k] ?? 0));
-  const t = Math.max(1e-6, temperature);
-  const max = Math.max(...vals);
-  const exps = vals.map(v => Math.exp((v - max) / t));
-  const sum  = exps.reduce((a,b)=>a+b, 0) || 1;
-  const out = {};
-  LABELS.forEach((k,i) => out[k] = exps[i] / sum);
-  return out; // sums to ~1
+    const vals = LABELS.map(k => (raw[k] ?? 0));
+    const t = Math.max(1e-6, temperature);
+    const max = Math.max(...vals);
+    const exps = vals.map(v => Math.exp((v - max) / t));
+    const sum  = exps.reduce((a,b)=>a+b, 0) || 1;
+    const out = {};
+    LABELS.forEach((k,i) => out[k] = exps[i] / sum);
+    return out; // sums to ~1
 }
 
 // simple LCG so you can seed runs (no external libs needed)
 function makeRNG(seed = 123456789) {
-  let x = seed >>> 0;
-  return function rand() {
-    x = (1664525 * x + 1013904223) >>> 0;
-    return (x / 0x100000000);
-  };
+    let x = seed >>> 0;
+    return function rand() {
+        x = (1664525 * x + 1013904223) >>> 0;
+        return (x / 0x100000000);
+    };
 }
 
 function sampleFromProbs(probs, rng = Math.random) {
-  let r = rng(), acc = 0;
-  for (const k of LABELS) {
-    acc += probs[k] ?? 0;
-    if (r <= acc) return k;
-  }
-  return LABELS[LABELS.length - 1]; // fallback
+    let r = rng(), acc = 0;
+    for (const k of LABELS) {
+        acc += probs[k] ?? 0;
+        if (r <= acc) return k;
+    }
+    return LABELS[LABELS.length - 1]; // fallback
 }
