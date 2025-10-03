@@ -190,10 +190,10 @@ function addListeners() {
 
     selbones.addEventListener('change', (event) => {
         const index = selbones.value;
-        const state = environVRM.vrmstate();
+        const state = environVRM.vrmState();
         const sign = state.reverseSign ? -1 : 1;
         const part = state.currentVrm.humanoid.getNormalizedBoneNode(vrmAppState.bones[index]);
-        if(!part) return;
+        if(!part) {console.log('Did not retrieve part'); return};
         
         rotx.value = environVRM.radToDeg(part.rotation.x);
         roty.value = environVRM.radToDeg(part.rotation.y);

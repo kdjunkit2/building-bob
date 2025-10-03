@@ -50,7 +50,8 @@
         </ul>
     </div>
 </div>
-<br>
+<br><br>
+<div class='h2title'><i>Extras</i></div>
 <div id='mpanel4' class='appPanel child'>
     <div id='coach' class='appPanelItem hand' onclick="window.location.href='extra/coach'">
         <img src='/assets/football.png' style='position:relative; top:5px;' draggable='false' />

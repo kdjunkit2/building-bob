@@ -23,8 +23,6 @@ class vrmHandler {
             vowelIndex: 0,
             vowelValue: 0.7,
         }
-
-        
     }
 
     async loadFromBuffer(buffer) {
@@ -794,6 +792,25 @@ class environmentManager {
 
     vector3() {return new THREE.Vector3();}
     radToDeg(rad) {return THREE.MathUtils.radToDeg(rad);}
+
+    setEmotion(exprName, value = 1.0, name = '') {
+        const state = this.vrmState(name);
+        if (!state) return;
+        Pose.setExpressions(state, { [exprName]: value });
+    }
+
+    setEmotionSet(exprObj, name = '') {
+        const state = this.vrmState(name);
+        if (!state) return;
+        Pose.setExpressions(state, exprObj);
+    }
+
+    clearEmotions(name = '') {
+        const state = this.vrmState(name);
+        if (!state) return;
+        Pose.clearExpressions(state);
+    }
+
 
 }
 

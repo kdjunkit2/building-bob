@@ -1,5 +1,4 @@
-<!-- <script src="https://cdn.jsdelivr.net/npm/lamejs/lame.min.js"></script>  for mp3 encoding -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/howler/dist/howler.min.js"></script> -->
+<script src="//unpkg.com/brain.js"></script>
 
 <SCRIPT language="javascript" src="../shared/js/window.js"></SCRIPT> <!-- used for system popup windows and dragging windows -->
 <SCRIPT language="javascript" src="../shared/js/general.js"></SCRIPT> <!-- has some useful general functions for array management -->

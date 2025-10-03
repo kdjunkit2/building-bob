@@ -136,6 +136,7 @@ function resetClassifier() {
     document.getElementById('records').textContent = ``;
     document.getElementById('fields').textContent = ``;
     document.getElementById('embeddata').style.display = 'none';
+    document.getElementById('tstatus').textContent = '';
 }
 
 function restartFromLoad() {

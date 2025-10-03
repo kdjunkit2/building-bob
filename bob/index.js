@@ -32,11 +32,19 @@ const appState = {
     last: {
         prompt: '',
         response: '',
+        mood: 'Neutral',
     }
 }
 
+/* --------------------- Temperment Styles
+Base = middle of the road temperment
+Mello = slow to show emotion never gets to extremes, quick to return to neutral
+Hot = quick to anger and slow to cool down, slow to happiness and quick return to neutral
+Joyous = quick to happiness slow to return to neutral, slow to anger and quick to return to normal
+Meet = Never gets too angry, but quick to happiness slower return to neutral for either
+*/
 const justBob = new characterManager();
-justBob.add('Bob', "You are a helpful avatar named Bob who answers users questions. Answer as if you are Bob. Answer in the first person when talking about Bob since you are playing the role of Bob.");
+justBob.add('Bob', "You are a helpful avatar named Bob who answers users questions. Answer as if you are Bob. Answer in the first person when talking about Bob since you are playing the role of Bob.", {style: 'Meek', callback: moodResponse});
 
 const tglvoice = document.getElementById('togglevoice');
 const ttstype = document.getElementById('ttstype');
@@ -611,6 +619,43 @@ function promptResponse(a) {
     } else { // if no audio is selected
         addComment('bot', a[0].text);   // adds the comment to the UI
         uprompt.focus();                // sets the focus to the user text box to get ready for the next question
+    }
+
+    moodResponse();
+}
+
+function moodResponse() {
+    const bob = justBob.getCharacterByName('Bob');
+    const mood = bob.emotion.currentMood;
+    if(mood != appState.last.mood) {
+        environVRM.clearEmotions();
+        switch(mood) {
+            case 'Livid':
+                environVRM.setEmotion('angry', 1.0);
+                break;
+            case 'Angry':
+                environVRM.setEmotion('angry', 0.8);
+                break;
+            case 'Annoyed':
+                environVRM.setEmotionSet({sad: 0.3, angry: 0.7});
+                break;
+            case 'Apologetic':
+                environVRM.setEmotion('sad', 0.7);
+                break;
+            case 'Content':
+                environVRM.setEmotion('relaxed', 0.5);
+                break;
+            case 'Pleased':
+                environVRM.setEmotion('relaxed', 0.8);
+                break;
+            case 'Happy':
+                environVRM.setEmotionSet({relaxed: 1.0, happy: 0.1});
+                break;
+            case 'Elated':
+                environVRM.setEmotion('happy', 0.7);
+                break;
+        }
+        appState.last.mood = mood;
     }
 }
 

@@ -1,6 +1,6 @@
 //=============================== UTILITY FUNCTIONS ===================================
 
-function randIntBetween(min, max) {
+function randIntBetween(min, max) { // min to max inclusive
 	if(min==max) return max;
 	if(min > max) {let t=min; min=max; max=t;}
 	return Math.floor(Math.random()*(max-min+1))+min;

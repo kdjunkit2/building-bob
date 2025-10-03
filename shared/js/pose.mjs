@@ -297,3 +297,30 @@ export function autoGroundHips(state) {
     }
     hips.position.y -= min - 0.07;
 }
+
+//====================================  EXPRESSIONS
+
+// === Expressions support (VRM Expression presets) ===
+// Safe built-ins across most VRMs:
+export const FACE_PRESETS = ['happy','angry','sad','relaxed','surprised'];
+
+export function setExpressions(state, exprObj = {}) {
+    const vrm = state.currentVrm;
+    if (!vrm || !vrm.expressionManager) return;
+    for (const k of Object.keys(exprObj)) {
+        // ignore visemes & blink here so we don't fight talk/blink
+        if (FACE_PRESETS.includes(k)) {
+            vrm.expressionManager.setValue(k, clamp01(exprObj[k]));
+        }
+    }
+    vrm.expressionManager.update();
+}
+
+export function clearExpressions(state) {
+    const zeroes = {};
+    for (const k of FACE_PRESETS) zeroes[k] = 0;
+    setExpressions(state, zeroes);
+}
+
+function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+
