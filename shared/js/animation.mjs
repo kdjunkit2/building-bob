@@ -18,7 +18,7 @@ export function loadAnimationsObject(obj) {
         animationLibrary[animation.name] = animation;
         count++;
     }
-    console.log(`Loaded ${count} animations:`, Object.keys(animationLibrary));
+    //console.log(`Loaded ${count} animations:`, Object.keys(animationLibrary));
 }
 
 export function getAnimationLoop(name) {
@@ -35,10 +35,7 @@ export function addAnimationToLibrary(name, loop, frames) {
     if(!name) return;
     if(!name.length) return;
 
-    animationLibrary[name].loop = loop;
-    animationLibrary[name].frames = frames;
-
-    console.log(animationLibrary);
+    animationLibrary[name] = {name: name, loop: loop, frames: frames};
 }
 
 export function playPoseAnimation(state, aniName) {
@@ -55,15 +52,24 @@ export function playPoseAnimation(state, aniName) {
     if (currentAction) currentAction.stop();
 
     currentAction = animationMixer.clipAction(clip);
+
+    if (timeline.loop) {
+        currentAction.setLoop(THREE.LoopRepeat, Infinity);
+    } else {
+        currentAction.setLoop(THREE.LoopOnce, 0);
+        //currentAction.clampWhenFinished = true; // keeps the final frame
+    }
+
     currentAction.play();
     return timeline.loop;
 }
 
+
 export function stopPoseAnimation(state) {
     const vrm = state.currentVrm;
     if (currentAction) {
-    currentAction.stop();
-    currentAction = null;
+        currentAction.stop();
+        currentAction = null;
     }
     if (animationMixer) {
         animationMixer.uncacheRoot(vrm.scene);
@@ -189,7 +195,6 @@ function createAnimationClipFromPoseTimeline(state, timeline) {
     }
 
     const clip = new THREE.AnimationClip(timeline.name || 'Unnamed', -1, tracks);
-    clip.loop = timeline.loop ? THREE.LoopRepeat : THREE.LoopOnce;
 
     return clip;
 }

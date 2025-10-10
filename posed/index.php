@@ -32,7 +32,7 @@
 
 <input type="file" id="vrmFileInput" accept=".vrm" style='display: none;' />
 <input type="file" id="aniposeLoadFile" accept=".json" style="display:none;" />
-<?php include '/shared/forms/mbo.php';?>
+<?php include '../shared/forms/mbo.php';?>
 </body>
 
 <script type="importmap">

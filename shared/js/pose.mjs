@@ -36,7 +36,7 @@ export function loadPoses(url) {
             for (const pose of data.poses) {
                 poseLibrary[pose.name] = pose;
             }
-            console.log('Loaded poses:', Object.keys(poseLibrary));
+            //console.log('Loaded poses:', Object.keys(poseLibrary));
         })
         .catch((err) => console.error('Failed to load poses:', err));
 }
@@ -95,7 +95,7 @@ export function addPoseFromCurrent(state, name) {
 
 //=============================================== POSE APPLICATION
 
-export function applyPose(state, poseName) {
+export function applyPose(state, poseName, groundOverride = false) {
     const pose = poseLibrary[poseName];
     if (!pose || !state.currentVrm) {
         console.warn('Pose not found or no VRM loaded');
@@ -125,7 +125,7 @@ export function applyPose(state, poseName) {
         }
     }
 
-    state.grounded = pose.grounded;
+    if(!groundOverride) state.grounded = pose.grounded;
     autoGroundHips(state);
     state.pose = poseName;
 }

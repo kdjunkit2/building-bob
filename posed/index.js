@@ -578,7 +578,7 @@ function poseListChange() {
         pnametxt.value = posename;
     }
 
-    grounded.checked = vrmAppState.grounded;
+    grounded.checked = environVRM.getGrounded();
     selbones.dispatchEvent(new Event('change'));
 }
 
@@ -703,7 +703,7 @@ function addFrameRow(index, time, pose) {
     fselect.value = pose;
 
     const del = document.createElement('img');
-    del.src = '/sys/icons/x2.png';
+    del.src = '/assets/x2.png';
     del.id = 'framedelete_'+index;
     del.height = 15;
     del.className = 'iconbtn';
@@ -736,7 +736,7 @@ function updateAnimation() {
         }
     }
 
-    Anim.addAnimationToLibrary(name, document.getElementById('frameloop').checked, frames);
+    environVRM.addAnimationToLibrary(name, document.getElementById('frameloop').checked, frames);
     closeAniUpdate();
     setupAnimationList();
 }

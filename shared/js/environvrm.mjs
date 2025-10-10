@@ -725,7 +725,13 @@ class environmentManager {
         environ.currentModel.state.grounded = value;
         const vrmstate = this.vrmState(name);
         if(!vrmstate) return;
-        Pose.autoGroundHips(vrmstate);
+        Pose.applyPose(vrmstate, vrmstate.pose, true);
+    }
+    getGrounded(name = '') {
+        const environ = this.getEnvironment(name);
+        if(!environ) {console.warn('Could not get environment'); return;}
+        const vrmstate = this.vrmState(name);
+        return environ.currentModel.state.grounded;
     }
     head(name = '') {
         const vrm = this.vrm(name);
@@ -779,9 +785,10 @@ class environmentManager {
     animationList() {return Anim.getAnimationList();}
     animationLoop(index) {return Anim.getAnimationLoop(index);}
     animationFrames(index) {return Anim.getAnimationFrames(index);}
+    addAnimationToLibrary(name, loop, frames) {Anim.addAnimationToLibrary(name, loop, frames);}
     playAnimation(ani, name = '') {
         const state = this.vrmState(name);
-        if(!state) return;
+        if(!state) return false;
         return Anim.playPoseAnimation(state, ani);
     }
     stopAnimation() {
