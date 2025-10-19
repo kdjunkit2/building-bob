@@ -30,8 +30,8 @@
     </div>
     <div id='trainpanel' class='cpanel' style='display: none;'>
         <div class='ltext' style='width: 200px; margin-top: 5px;'>Iterations:</div><input type='number' id='iterations' step=1000 style='width: 100px;' /><br>
-        <div class='ltext' style='width: 200px; margin-top: 5px;'>Error Threshold:</div><input type='number' id='errort' step=0.001 style='width: 100px;' /><br>
-        <div class='ltext' style='width: 200px; margin-top: 5px;'>Learning Rate:</div><input type='number' id='learnr' step=0.01 style='width: 100px;' /><br>
+        <div class='ltext' style='width: 200px; margin-top: 5px;'>Error Threshold:</div><input type='number' id='errort' step=0.0001 style='width: 100px;' /><br>
+        <div class='ltext' style='width: 200px; margin-top: 5px;'>Learning Rate:</div><input type='number' id='learnr' step=0.001 style='width: 100px;' /><br>
         <div class='ltext' style='width: 200px; margin-top: 5px;'>Hidden Layers (comma separated):</div><input type='text' id='hidden' style='width: 100px;' /><br>
         <div id='traindefaults' class='ctextbtn' style='margin-top: 10px;'>Reset Defaults</div>
         <br><br>

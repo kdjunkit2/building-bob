@@ -20,20 +20,20 @@ const classifier = {
 
 const toptdefaults = {
     iterations: 5000,
-    errorThresh: 0.005,
-    learningRate: 0.3, // scales with delta to effect training rate --> number between 0 and 1
+    errorThresh: 0.0005,
+    learningRate: 0.003, // scales with delta to effect training rate --> number between 0 and 1
 };
 
 const toptions = {
     iterations: 5000,
-    errorThresh: 0.005,
-    learningRate: 0.3, // scales with delta to effect training rate --> number between 0 and 1
+    errorThresh: 0.0005,
+    learningRate: 0.003, // scales with delta to effect training rate --> number between 0 and 1
     momentum: 0.1, // scales with next layer's change value --> number between 0 and 1
     validation: 0.2,
 };
 
 const mdlParams = {
-    activation: 'sigmoid',
+    activation: 'tanh',
     hiddenLayers: [192],
 };
 
@@ -253,7 +253,6 @@ function trainReady(json) {
 }
 
 function saveModel() {
-    console.log(classifier.net);
     if(!classifier.net) return;
     downloadJson(classifier.net, classifier.jsonname);
     document.getElementById('modelname').textContent = classifier.jsonname;

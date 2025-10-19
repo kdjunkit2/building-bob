@@ -122,11 +122,87 @@ function scaleArray(array, newMin, newMax) {
     });
 }
 
-function normalizeArray(array) {
+function l1NormalizeVector(array) {
 	if(!array) return [];
 	if(!array.length) return [];
 	const sum = array.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 	return array.map(element => element / sum);
+}
+
+function l2NormalizeVector(array) {
+	const norm = Math.sqrt(array.reduce((sum, x) => sum + x * x, 0)) || 1e-8;
+	return array.map(x => x / norm);
+}
+
+function normalizeData(data, options = {method: 'l1'}) {
+	switch(method) {
+		case 'l1':
+			l1Normalize(data);
+			break;
+		case 'l2':
+			l2Normalize(data);
+			break;
+		case 'minmax':
+			minmaxNormalize(data);
+			break;
+	}
+}
+
+function l1Normalize(data) {
+	if (!Array.isArray(data) || !Array.isArray(data[0])) {
+		console.error('l1Normalize expects an array of arrays');
+		return [];
+	}
+
+	return data.map(vec => {
+		const denom = vec.reduce((sum, x) => sum + Math.abs(x), 0) || 1e-8;
+		return vec.map(x => x / denom);
+	});
+}
+
+
+function l2Normalize(data) {
+	if (!Array.isArray(data) || !Array.isArray(data[0])) {
+		console.error('l2Normalize expects an array of arrays');
+		return [];
+	}
+
+	return data.map(vec => {
+		const norm = Math.sqrt(vec.reduce((sum, x) => sum + x * x, 0)) || 1e-8;
+		return vec.map(x => x / norm);
+	});
+}
+
+function minmaxNormalize(data) {
+	if (!Array.isArray(data) || !Array.isArray(data[0])) {
+		console.error('minmaxNormalize expects an array of arrays');
+		return {na: [], mins: [], maxs: []};
+	}
+
+	const numCols = data[0].length;
+	const numRows = data.length;
+	
+	// Get the minimum and maximum values for each column
+	const mins = new Array(numCols).fill(Infinity);
+	const maxs = new Array(numCols).fill(-Infinity);
+	
+	for (let j = 0; j < numCols; j++) {
+		for (let i = 0; i < numRows; i++) {
+			const value = data[i][j];
+			mins[j] = Math.min(mins[j], value);
+			maxs[j] = Math.max(maxs[j], value);
+		}
+	}
+	
+	// Normalize each column
+	const normalizedArray = data.map(row => {
+		return row.map((value, j) => {
+			const range = maxs[j] - mins[j];
+			return range === 0 ? 0 : (value - mins[j]) / range;
+		});
+	});
+
+	return {normalized: normalizedArray, mins: mins, maxs: maxs};
 }
 
 function scaleFactorArray(array, factor) {
